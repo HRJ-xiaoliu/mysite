@@ -1,0 +1,70 @@
+/* 1. 把 form 伪装成一个大搜索框 */
+.inline-search-form {
+    display: flex;
+    align-items: center;
+    width: min(720px, calc(100% - 3rem));
+    margin: 2rem auto; /* 居中显示 */
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid rgba(15, 36, 62, 0.08);
+    border-radius: 50px; /* 胶囊圆角形状 */
+    overflow: hidden; /* 确保内部元素不会超出圆角 */
+    box-shadow: 0 14px 40px rgba(11, 79, 138, 0.08);
+    transition: transform var(--trans-base), box-shadow var(--trans-base), border-color var(--trans-base);
+}
+
+/* 焦点状态：当用户点击输入框时，整个 form 产生高亮反馈 */
+.inline-search-form:focus-within {
+    border-color: var(--primary-blue-soft);
+    box-shadow: 0 4px 15px rgba(11, 79, 138, 0.18);
+    transform: translateY(-1px);
+}
+
+/* 2. 真正的输入框：去掉边框，撑满剩余空间 */
+.inline-search-form .search-input {
+    flex-grow: 1; /* 占据所有剩余空间 */
+    border: none; /* 去除原生边框 */
+    background: transparent;
+    padding: 14px 24px; /* 舒适的内边距 */
+    font-size: 0.168rem;
+    color: var(--text-strong);
+    outline: none;
+}
+
+/* 3. 内嵌的搜索按钮：无缝贴合右侧 */
+.inline-search-form .inner-search-btn {
+    background: var(--primary-blue, #0b4f8a);
+    color: #ffffff;
+    border: none;
+    padding: 14px 28px;
+    font-size: clamp(0.152rem, 1vw, 0.168rem);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    height: 100%; /* 填满父容器的高度 */
+    
+    /* 核心修复：强制文本不换行，始终保持单行横向排列 */
+    white-space: nowrap; 
+    
+    /* 视觉优化：确保无论高度如何变化，文字都完美居中 */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.inline-search-form .inner-search-btn:hover {
+    background: #083b66; /* 鼠标悬浮时颜色加深 */
+}
+
+/* 响应式调整：在小屏幕上缩小一点 */
+@media (max-width: 600px) {
+    .inline-search-form {
+        max-width: 100%;
+        margin: 1rem;
+    }
+    .inline-search-form .search-input {
+        padding: 12px 16px;
+    }
+    .inline-search-form .inner-search-btn {
+        padding: 12px 20px;
+    }
+}

@@ -1,0 +1,364 @@
+/* ==========================================================================
+   成员模块专属样式表 (美学重构版：80%视宽 / 统一20px边距)
+   ========================================================================== */
+
+:root {
+    --academic-blue: #0b4f8a;
+    --text-deep: #1a1a1a;
+    --text-muted: #595959;
+    --border-light: rgba(11, 79, 138, 0.1);
+}
+
+/* ========================================
+   1. 宏观页面布局 (80% 宽度，1:4 侧边栏架构)
+   ======================================== */
+.member-system-wrapper {
+    padding: 60px 0;
+    background-color: var(--surface);
+    min-height: 100vh;
+}
+
+.member-container {
+    /* 核心修改：占据整个页面 80% 的大小 */
+    width: 80%; 
+    /* 增加一个合理的上限，防止在超宽带鱼屏上文字过长导致阅读疲劳 */
+    max-width: 1980px; 
+    min-width: 320px;
+    margin: 0 auto; /* 绝对居中 */
+    display: flex;
+    gap: 30px; /* 调整了栏间距，使其在 80% 宽度下更紧凑舒适 */
+    align-items: flex-start;
+    flex-wrap: nowrap; /* PC 端强制不换行 */
+}
+
+/* 左侧 1/5：人员列表导航 */
+.member-sidebar {
+    flex: 0 0 260px; /* 稍微放宽侧边栏，使其在 80% 宽度下比例更协调 */
+}
+
+.sidebar-sticky {
+    position: sticky;
+    top: 120px; /* 预留给顶部导航栏的空间 */
+    background: rgba(255, 255, 255, 0.92);
+    padding: 30px 20px;
+    border-radius: 16px;
+    border: 1px solid var(--border-soft);
+    box-shadow: var(--shadow-card);
+}
+
+.sidebar-title {
+    font-size: 0.2rem;
+    color: var(--academic-blue);
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--academic-blue);
+    font-weight: 600;
+}
+
+.group-label {
+    font-size: 0.128rem;
+    text-transform: uppercase;
+    color: #999;
+    letter-spacing: 1px;
+    margin: 20px 0 10px;
+}
+
+.nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-item {
+    display: block;
+    padding: 12px 16px;
+    color: var(--text-deep);
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.152rem;
+    transition: all 0.2s ease;
+    margin-bottom: 4px;
+}
+
+.nav-item span {
+    font-size: 0.12rem;
+    color: #888;
+    margin-left: 6px;
+}
+
+.nav-item:hover {
+    background: rgba(11, 79, 138, 0.05);
+    color: var(--academic-blue);
+    transform: translateX(4px); /* 增加极其轻微的悬停位移交互 */
+}
+
+.nav-item.active {
+    background: var(--academic-blue);
+    color: white;
+}
+
+.nav-item.active span {
+    color: rgba(255,255,255,0.7);
+}
+
+/* 右侧 4/5：内容展示区 */
+.member-main-content {
+    flex: 1 1 auto;
+    min-width: 0; 
+}
+
+/* ========================================
+   2. Index页 默认欢迎面板
+   ======================================== */
+.index-welcome-card {
+    background: rgba(255, 255, 255, 0.96);
+    padding: 80px 20px;
+    border-radius: 20px;
+    border: 1px solid var(--border-soft);
+    box-shadow: var(--shadow-card);
+    text-align: center;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* ========================================
+   3. Detail页 (老师/学生) 成员详情卡片
+   ======================================== */
+.profile-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    border: 1px solid var(--border-soft);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+}
+
+/* 头部排版：头像与信息的横向交互 */
+.profile-header-layout {
+    display: flex;
+    padding: 40px 24px;
+    gap: 30px;
+    border-bottom: 1px solid rgba(15, 36, 62, 0.08);
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* 固定头像尺寸：175*243 */
+.avatar-container {
+    flex: 0 0 175px;
+    height: 243px;
+    background: rgba(245, 247, 250, 0.9);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 22px rgba(15, 36, 62, 0.08);
+}
+
+.avatar-image {
+    width: 175px;
+    height: 243px;
+    object-fit: cover;
+}
+
+.avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--academic-blue), #1e70b8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.64rem;
+}
+
+/* 右侧基本信息区 */
+.profile-info-layout {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* 改为整体居中，在视觉上更平衡 */
+    min-height: 243px; 
+}
+
+.profile-name {
+    font-size: 0.352rem;
+    color: var(--academic-blue);
+    margin: 0 0 15px 0;
+    font-family: "Source Han Serif CN", "Noto Serif CJK SC", serif; 
+    font-weight: 700;
+}
+
+/* 横向排列的元数据 */
+.profile-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px; /* 缩小间距，使信息更聚拢 */
+    margin-bottom: 20px;
+}
+
+.meta-item {
+    font-size: 0.168rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+}
+
+.meta-item strong {
+    color: var(--text-deep);
+    margin-right: 8px;
+    font-weight: 600;
+}
+
+/* 状态标签 */
+.profile-badges {
+    display: flex;
+    gap: 10px;
+}
+
+.status-badge {
+    padding: 6px 16px;
+    background: rgba(11, 79, 138, 0.05);
+    color: var(--academic-blue);
+    border: 1px solid rgba(11, 79, 138, 0.1);
+    font-size: 0.144rem;
+    font-weight: 500;
+    border-radius: 20px;
+}
+
+/* ========================================
+   4. 下半部分：流式内容排版 (StreamField)
+   ======================================== */
+.profile-content-area {
+    /* 核心修改：左右严格保留 20px 边距 */
+    padding: 40px 20px; 
+    line-height: 1.8;
+    color: var(--text-deep);
+}
+
+.stream-heading {
+    font-size: 0.24rem;
+    color: var(--primary-blue);
+    margin: 40px 0 20px;
+    border-left: 3px solid var(--primary-blue);
+    padding: 12px 20px;
+    background: linear-gradient(90deg, rgba(11, 79, 138, 0.08) 0%, rgba(11, 79, 138, 0) 100%);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.stream-heading:first-child {
+    margin-top: 0; 
+}
+
+.stream-paragraph {
+    font-size: 0.168rem;
+    margin-bottom: 25px;
+    text-align: justify; /* 文本两端对齐，学术排版必备 */
+}
+
+.stream-image-wrapper {
+    margin: 30px 0;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.stream-image-wrapper img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* 默认隐藏所有的成员面板 */
+.member-panel {
+    display: none;
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+/* 只有带有 active 类的面板才会显示，并附带平滑的淡入动画 */
+.member-panel.active {
+    display: block;
+    animation: fadeUpIn 0.4s ease-out forwards;
+}
+
+.sidebar-search-wrapper {
+    position: relative;
+    width: 2.18rem;
+    height: 0.94rem;
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-search-wrapper #member-search.member-search-input {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.12rem 0.16rem;
+    font-size: 0.15rem;
+    color: #000000;
+    background-color: #ffffff;
+    border: 0.01rem solid #000000;
+    border-radius: 0.04rem;
+    outline: none;
+    font-family: 'SourceHanSansCN-Medium', sans-serif;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.sidebar-search-wrapper #member-search.member-search-input::placeholder {
+    color: #888888;
+}
+
+.sidebar-search-wrapper #member-search.member-search-input:focus {
+    border-color: #000000;
+    box-shadow: 0 0 0 0.02rem #000000;
+}
+
+@keyframes fadeUpIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* ========================================
+   5. 移动端与平板自适应折叠
+   ======================================== */
+@media (max-width: 1100px) {
+    .member-container {
+        width: 90%; /* 屏幕较小时，放弃 80%，利用更多屏幕空间 */
+        flex-direction: column;
+        gap: 24px;
+    }
+    .member-sidebar {
+        flex: auto;
+        width: 100%;
+    }
+    .sidebar-sticky {
+        position: static;
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .member-container {
+        width: 95%; /* 手机端几乎占满屏幕 */
+    }
+    .profile-header-layout {
+        flex-direction: column;
+        align-items: center; /* 手机端头像居中对齐 */
+        text-align: center;
+    }
+    .avatar-container {
+        flex: 0 0 auto;
+    }
+    .profile-info-layout {
+        align-items: center;
+        min-height: auto;
+    }
+    .profile-meta-row {
+        justify-content: center;
+    }
+}

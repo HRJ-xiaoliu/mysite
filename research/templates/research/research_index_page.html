@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags %}
+
+{% block header %}
+    {% include "includes/header.html" %}
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/research.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="research-system-wrapper">
+    <div class="research-container">
+        
+        <aside class="research-sidebar">
+            <div class="research-sidebar-sticky">
+                <div class="sidebar-title">成果分类导航</div>
+                <nav>
+                    <a href="javascript:void(0);" class="research-nav-item active" onclick="switchResearchTab('pub-panel', this)">
+                        学术论文 / Publications
+                    </a>
+                    <a href="javascript:void(0);" class="research-nav-item" onclick="switchResearchTab('patent-panel', this)">
+                        发明专利 / Patents
+                    </a>
+                    <a href="javascript:void(0);" class="research-nav-item" onclick="switchResearchTab('proj-panel', this)">
+                        科研项目 / Projects
+                    </a>
+                </nav>
+            </div>
+        </aside>
+
+        <section class="research-main-content">
+            
+            <div id="pub-panel" class="research-panel active">
+                <div class="research-intro-card">
+                    <h2>学术论文</h2>
+                    <div class="richtext-content">{{ self.intro|richtext }}</div>
+                </div>
+
+                {% for pub in self.publications.all %}
+                    {% if pub.pub_type != 'patent' %}
+                    <article class="research-item-card">
+                        <div class="pub-tag">{{ pub.get_pub_type_display }}</div>
+                        <h3>{{ pub.title }}</h3>
+                        <div class="research-meta">
+                            <strong>{{ pub.authors }}</strong> 
+                            <span class="meta-divider">•</span> 
+                            <em>{{ pub.venue }}</em> 
+                            <span class="meta-divider">•</span> 
+                            <span>{{ pub.year }}</span>
+                        </div>
+                        
+                        <div class="research-actions">
+                            {% if pub.abstract %}
+                            <button class="action-btn toggle-abstract-btn" onclick="toggleAbstract(this, '阅读摘要', '收起摘要')">
+                                <span>阅读摘要</span>
+                                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                            {% endif %}
+                            {% if pub.doi %}
+                            <a href="{{ pub.doi }}" target="_blank" class="action-btn">
+                                <span>访问原文</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                            </a>
+                            {% endif %}
+                        </div>
+
+                        {% if pub.abstract %}
+                        <div class="research-abstract-panel richtext-content">
+                            {{ pub.abstract|richtext }}
+                        </div>
+                        {% endif %}
+                    </article>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div id="patent-panel" class="research-panel">
+                <div class="research-intro-card">
+                    <h2>发明专利</h2>
+                    <p style="font-size: .2rem; margin-bottom: 20px;">以下展示了团队近年来获得授权及公开的发明专利、实用新型与软件著作权。</p>
+                </div>
+
+                {% for pub in self.publications.all %}
+                    {% if pub.pub_type == 'patent' %}
+                    <article class="research-item-card">
+                        <div class="pub-tag" style="background: #FFF0E5; color: #D95D00;">{{ pub.get_pub_type_display }}</div>
+                        <h3>{{ pub.title }}</h3>
+                        <div class="research-meta">
+                            <strong>发明人：</strong> {{ pub.authors }}
+                            <span class="meta-divider">•</span> 
+                            <strong>授权号/申请号：</strong> <em>{{ pub.venue }}</em> 
+                            <span class="meta-divider">•</span> 
+                            <span>{{ pub.year }}</span>
+                        </div>
+                        
+                        <div class="research-actions">
+                            {% if pub.abstract %}
+                            <button class="action-btn toggle-abstract-btn" onclick="toggleAbstract(this, '专利说明', '收起说明')">
+                                <span>专利说明</span>
+                                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                            {% endif %}
+                        </div>
+
+                        {% if pub.abstract %}
+                        <div class="research-abstract-panel richtext-content">
+                            {{ pub.abstract|richtext }}
+                        </div>
+                        {% endif %}
+                    </article>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div id="proj-panel" class="research-panel">
+                <div class="research-intro-card">
+                    <h2>科研项目</h2>
+                    <p style="font-size: .2rem; margin-bottom: 20px;">以下展示了团队近年来主持或参与的重点研发计划、横向课题与专项科研基金项目。</p>
+                </div>
+
+                {% for proj in self.projects.all %}
+                <article class="research-item-card">
+                    <div class="pub-tag proj-tag">{{ proj.role }}</div>
+                    <h3>{{ proj.title }}</h3>
+                    <div class="research-meta">
+                        <strong>项目状态与编号：</strong> {{ proj.status }}
+                    </div>
+                    
+                    <div class="research-actions">
+                        <button class="action-btn toggle-abstract-btn" onclick="toggleAbstract(this, '项目详情', '收起详情')">
+                            <span>项目详情</span>
+                            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </button>
+                    </div>
+
+                    <div class="research-abstract-panel richtext-content">
+                        {{ proj.description|richtext }}
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+
+        </section>
+    </div>
+</main>
+
+<script>
+// 1. 选项卡：绝对排他切换逻辑
+function switchResearchTab(panelId, btn) {
+    // A. 强制关闭所有面板和导航按钮的激活状态
+    document.querySelectorAll('.research-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.research-nav-item').forEach(b => b.classList.remove('active'));
+    
+    // B. 仅点亮当前用户选择的目标
+    const targetPanel = document.getElementById(panelId);
+    if (targetPanel) {
+        targetPanel.classList.add('active');
+    }
+    if (btn) {
+        btn.classList.add('active');
+    }
+    
+    // C. 平滑回滚，防止页面跳动迷失焦点
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// 2. 摘要/详情：手风琴互斥展开逻辑
+function toggleAbstract(btn, defaultText, activeText) {
+    const card = btn.closest('.research-item-card');
+    const panel = card.querySelector('.research-abstract-panel');
+    const textSpan = btn.querySelector('span');
+    const isCurrentlyExpanded = btn.classList.contains('expanded');
+    
+    // A. 互斥防御：先强制收起页面上【其他所有】正在展开的面板
+    document.querySelectorAll('.research-abstract-panel').forEach(p => {
+        if (p !== panel) p.classList.remove('visible');
+    });
+    document.querySelectorAll('.toggle-abstract-btn').forEach(b => {
+        if (b !== btn) {
+            b.classList.remove('expanded');
+            // 恢复其他按钮的默认文字 (通过传入的 defaultText)
+            const otherSpan = b.querySelector('span');
+            // 简单判断其他按钮属于哪个面板来恢复文字
+            if (otherSpan.textContent.includes('收起')) {
+                otherSpan.textContent = otherSpan.textContent.replace('收起', '阅读').replace('详情', '项目').replace('说明', '专利');
+                // 为了严谨，直接重置为最初始状态
+                if(b.closest('#proj-panel')) otherSpan.textContent = '项目详情';
+                else if(b.closest('#patent-panel')) otherSpan.textContent = '专利说明';
+                else otherSpan.textContent = '阅读摘要';
+            }
+        }
+    });
+    
+    // B. 处理当前点击的面板
+    if (!isCurrentlyExpanded) {
+        // 如果原本是关闭的 -> 展开它
+        btn.classList.add('expanded');
+        panel.classList.add('visible');
+        textSpan.textContent = activeText;
+    } else {
+        // 如果原本是展开的 -> 收起它
+        btn.classList.remove('expanded');
+        panel.classList.remove('visible');
+        textSpan.textContent = defaultText;
+    }
+}
+</script>
+{% endblock %}

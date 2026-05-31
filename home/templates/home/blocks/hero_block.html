@@ -1,0 +1,56 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+<section class="hero-carousel-system">
+    <div class="carousel-viewport">
+        
+        {% for slide in value.slides %}
+            <a href="{{ slide.link_url|default:'javascript:void(0);' }}" 
+               class="carousel-slide {% if forloop.first %}active{% endif %}"
+               target="_blank">
+               
+               {% image slide.image fill-1920x1080 %}
+               
+            </a>
+        {% endfor %}
+
+        <div class="carousel-dots">
+            {% for slide in value.slides %}
+                <span class="dot {% if forloop.first %}active{% endif %}" data-index="{{ forloop.counter0 }}"></span>
+            {% endfor %}
+        </div>
+        
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const carousels = document.querySelectorAll('.hero-carousel-system');
+
+    carousels.forEach(carousel => {
+        const slides = carousel.querySelectorAll('.carousel-slide');
+        
+        if (slides.length <= 1) return;
+
+        let currentIndex = 0;
+        let timer = null;
+
+        const showSlide = (index) => {
+            slides.forEach(s => s.classList.remove('active'));
+            slides[index].classList.add('active');
+            currentIndex = index;
+        };
+
+        const nextSlide = () => {
+            let nextIndex = (currentIndex + 1) % slides.length;
+            showSlide(nextIndex);
+        };
+
+        const startTimer = () => {
+            if(timer) clearInterval(timer); 
+            timer = setInterval(nextSlide, 5000);
+        };
+
+        startTimer();
+    });
+});
+</script>

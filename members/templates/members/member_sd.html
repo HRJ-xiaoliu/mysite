@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+{% block header %}
+    {% include "includes/header.html" %}
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/members.css' %}">
+{% endblock %}
+
+{% block content %}
+    <main class="student-profile-wrapper">
+        <div class="container profile-card">
+            
+            <header class="profile-header-layout">
+                
+                <div class="avatar-container">
+                    {% if page.avatar %}
+                        {% image page.avatar fill-200x260 as avatar_img %}
+                        <img src="{{ avatar_img.url }}" alt="{{ page.title }}" class="avatar-image">
+                    {% else %}
+                        <div class="avatar-placeholder">🎓</div>
+                    {% endif %}
+                </div>
+
+                <div class="profile-info-layout">
+                    <h1 class="profile-name">{{ page.title }}</h1>
+                    
+                    <div class="profile-badges">
+                        <span class="status-badge">📌 状态：{{ page.get_academic_status_display }}</span>
+                        <span class="status-badge">🎓 学位：{{ page.get_degree_type_display }}</span>
+                    </div>
+
+                    <div class="profile-meta-grid">
+                        {% if page.enrollment_year %}
+                            <div class="profile-meta-item">
+                                📅 入学年份：<strong>{{ page.enrollment_year }} 级</strong>
+                            </div>
+                        {% endif %}
+                        
+                        {% if page.birth_date %}
+                            <div class="profile-meta-item">
+                                🎂 出生年月：<strong>{{ page.birth_date|date:"Y年m月" }}</strong>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </header>
+        </div>
+    </main>
+{% endblock %}

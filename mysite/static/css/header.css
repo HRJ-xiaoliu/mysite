@@ -1,0 +1,222 @@
+/* 基础变量补充定义 */
+:root {
+    --nav-gap: 0.32rem; 
+    --header-height: 120px;
+}
+
+/* 定义标志文字的动态流光关键帧引擎 */
+@keyframes altLogoShimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.alt-hdr-academic {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--header-height);
+    z-index: 1000;
+    background: rgba(245, 247, 250, 0.92);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border-soft);
+    display: flex;
+    justify-content: center;
+    transition: background var(--trans-slow), box-shadow var(--trans-slow), border-color var(--trans-slow);
+}
+
+/* 动态光晕效果类，由后端的 JavaScript 侦听器动态挂载 */
+.alt-hdr-academic.alt-hdr-scrolled-glow {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 10px 40px rgba(11, 79, 138, 0.08);
+}
+
+.alt-hdr-bg-layer {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.15;
+    background-size: cover;
+    background-position: center;
+}
+
+.alt-hdr-wrapper {
+    width: var(--global-width);
+    max-width: var(--max-content-width);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-inline: var(--global-padding-x);
+    margin: 0 auto;
+}
+
+/* 施加两百像素的恒定左侧空间推力 */
+.alt-hdr-left {
+    flex: 0 0 auto;
+    margin-left:20px; 
+}
+
+.alt-hdr-right {
+    flex: 0 0 220px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* 标志文字的高级光学渲染与流光动画 */
+.alt-hdr-logo-text {
+    font-size: .32rem;
+    font-family: 'I-Ngaan-2', serif;
+    text-decoration: none;
+    letter-spacing: -0.5px;
+    display: inline-flex;  
+    width: 400px;          
+    height: 80px;          
+    align-items: center;   
+    justify-content: flex-start;
+    background: linear-gradient(120deg, var(--primary-blue) 0%, #b1e3ee 40%, var(--primary-blue) 80%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.alt-hdr-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.alt-hdr-nav-links {
+    display: flex;
+    gap: var(--nav-gap);
+    list-style: none;
+    flex-wrap: wrap;
+}
+
+.alt-hdr-nav-links a {
+    text-decoration: none;
+    color: var(--text-strong);
+    font-size: var(--font-base);
+    font-weight: 500;
+    position: relative;
+    padding: 10px 0;
+    transition: color var(--trans-base), text-shadow var(--trans-base);
+}
+
+.alt-hdr-nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--primary-blue);
+    transition: all var(--trans-slow) cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateX(-50%);
+    box-shadow: 0 -2px 10px rgba(11, 79, 138, 0.5);
+}
+
+.alt-hdr-nav-links a:hover::after, .alt-hdr-nav-links a.active::after {
+    width: 100%;
+}
+
+/* 搜索框 */
+.custom-search-box form {
+    display: flex;
+    align-items: center;
+    width: 3rem;
+    height: 0.6rem;
+    background: #ffffff;
+    border-radius: 0.08rem;
+    border: 0.01rem solid rgba(11, 79, 138, 0.1);
+    box-shadow: 0 0.04rem 0.15rem rgba(0, 0, 0, 0.05);
+    padding-right: 0.05rem; 
+    transition: all 0.3s ease;
+}
+
+.custom-search-box form:focus-within {
+    border-color: rgba(54, 138, 247, 0.4);
+    box-shadow: 0 0.04rem 0.2rem rgba(54, 138, 247, 0.15);
+}
+
+.custom-search-box .search-input {
+    flex: 1;
+    height: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding-left: 0.03rem;
+    padding-right: 0.1rem;
+    font-size: 0.16rem;
+    color: #333333;
+    text-align: left;
+}
+
+.custom-search-box .search-input::placeholder {
+    color: #999999;
+}
+
+.custom-search-box .search-submit-btn {
+    width: 0.7rem;
+    height: 0.5rem;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.08rem; 
+    background: linear-gradient(135deg, #3ec5e3 0%, #368af7 50%, #0a5dda 100%);
+    color: #ffffff;
+    font-size: 0.16rem;
+    letter-spacing: 0.02rem;
+    font-family: 'SourceHanSansCN-Medium', sans-serif;
+    transition: filter 0.3s ease;
+    /* ======== 新增的三道排版保险 ======== */
+    white-space: nowrap;  /* 强制文本不换行，保持横向排列 */
+    flex-shrink: 0;       /* 防止在 flex 布局中被挤压变窄 */
+    padding: 0;           /* 消除可能存在的浏览器默认内边距影响 */
+}
+
+.custom-search-box .search-submit-btn:hover {
+    filter: brightness(1.15);
+}
+
+/* 响应式降级：在较小屏幕上剥离强制的两百像素外边距以维持物理结构的完整 */
+@media (max-width: 1040px) {
+    .alt-hdr-wrapper {
+        width: 100%;
+    }
+    .alt-hdr-left {
+        margin-left: 0;
+        flex: 0 0 auto;
+    }
+    .alt-hdr-right {
+        flex: 0 0 auto;
+    }
+    .alt-hdr-nav-links {
+        gap: .2rem;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 760px) {
+    .alt-hdr-wrapper {
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    .alt-hdr-center {
+        width: 100%;
+        order: 3;
+        margin-top: 0.8rem;
+    }
+    .alt-hdr-nav-links {
+        justify-content: center;
+        gap: 1rem;
+    }
+    .alt-hdr-search-box {
+        width: 100%;
+        order: 2;
+    }
+}

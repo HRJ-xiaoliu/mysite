@@ -1,0 +1,331 @@
+.hero-carousel-system {
+    width: 100%;
+    max-width: 100%;
+    /* 修正 1：强制去除外边距，防止容器下方出现 3rem 的物理白条 */
+    margin: 0; 
+    /* 修正 2：精确计算高度，确保容器与 Header 无缝衔接 */
+    height: calc(100vh - 110px); 
+    display: block; /* 放弃 flex，直接使用块级布局减少渲染层次 */
+    /* 修正 3：彻底清除背景干扰，设置为透明 */
+    background: transparent; 
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
+    overflow: hidden;
+}
+.carousel-viewport {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.carousel-slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100vh;
+    opacity: 0;
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+}
+
+.carousel-slide.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+.carousel-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 核心属性：保证图片铺满视口且不变形 */
+    object-position: center; /* 确保图片缩放时以中心为基准 */
+    transform: scale(1);
+    transition: transform 6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.carousel-slide.active img {
+    transform: scale(1.06);
+}
+
+.carousel-dots {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    gap: 12px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: all var(--trans-base);
+}
+
+.dot.active {
+    background: #fff;
+    transform: scale(1.3);
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    padding: clamp(.32rem, 4vw, .56rem);
+    background: linear-gradient(180deg, rgba(4, 36, 71, 0.22) 0%, rgba(4, 36, 71, 0.78) 100%);
+    color: #fff;
+}
+
+.hero-overlay h1 {
+    font-size: clamp(0.44rem, 5vw, 0.704rem);
+    max-width: 12ch;
+    margin: 0 0 .23rem;
+    line-height: 1.05;
+}
+
+.hero-overlay::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(62,197,227,0.24), transparent 38%);
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   5. 业务模块容器 (Section Blocks) - 统一 70% 宽度架构
+   ========================================================================== */
+.education-section,
+.events-section,
+.research-section,
+.news-section,
+.media-section {
+    width: min(92%, 1980px);
+    margin: 0 auto auto auto;
+    padding: clamp(.32rem, 3vw, .52rem) var(--global-padding-x);
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+}
+
+
+/* ==========================================================================
+   6. 内部卡片与排版系统 (Cards & Typography)
+   ========================================================================== */
+.section-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .16rem;
+    margin-bottom: .2rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: .16rem;
+}
+
+.section-header h2 {
+    font-size: clamp(0.296rem, 2.5vw, 0.392rem);
+    margin: 0;
+    letter-spacing: -0.03em;
+}
+
+.section-subtitle {
+    color: var(--primary-blue);
+    font-size: 0.16rem;
+    font-weight: 600;
+}
+
+.view-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-weight: 600;
+    color: var(--primary-blue);
+    background: rgba(11, 79, 138, 0.08);
+    border: 1px solid rgba(11, 79, 138, 0.16);
+    border-radius: var(--radius-pill);
+    padding: .1rem .2rem;
+    transition: background var(--trans-base), transform var(--trans-base);
+}
+
+.view-more:hover {
+    background: rgba(11, 79, 138, 0.14);
+    transform: translateY(-1px);
+}
+
+.events-list,
+.news-grid,
+.research-grid,
+.media-list,
+.education-list {
+    display: grid;
+    gap: .24rem;
+}
+
+.event-item,
+.news-item,
+.research-item,
+.media-item,
+.education-item {
+    position: relative;
+}
+
+.event-item::after,
+.news-item::after,
+.research-item::after,
+.media-item::after,
+.education-item::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0) 100%);
+    transform: skewX(-25deg);
+    transition: none;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.event-item:hover,
+.news-item:hover,
+.research-item:hover,
+.media-item:hover,
+.education-item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card-hover);
+}
+
+
+.event-item,
+.media-item, 
+.news-item,
+.research-item,
+.education-item {
+    display: grid;
+    gap: .18rem;
+}
+
+.event-content,
+.news-content,
+.research-content,
+.media-content,
+.education-content {
+    font-size: 0.152rem;
+    display: flex;
+    flex-direction: column;
+    gap: .12rem;
+}
+
+.event-meta,
+.research-meta,
+.news-meta,
+.media-meta,
+.education-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .1rem;
+    margin-top: 0.1rem;
+    color: var(--accent-slate);
+    font-size: 0.152rem;
+}
+
+.event-description,
+.research-description,
+.news-summary,
+.media-description,
+.education-description {
+    margin-top: .16rem;
+    color: var(--text-muted);
+}
+
+/* ==========================================================================
+   7. 富文本排版引擎 (Rich Text Content)
+   ========================================================================== */
+.richtext-content {
+    color: var(--text-strong);
+    line-height: 1.8;
+    font-size: 0.168rem;
+    text-align: justify; 
+}
+
+.richtext-content p {
+    margin-bottom: .24em;
+}
+
+.richtext-content strong, 
+.richtext-content b {
+    color: var(--primary-blue);
+    font-weight: 600;
+}
+
+.richtext-content ul, 
+.richtext-content ol {
+    margin-bottom: 1.5em;
+    padding-left: 2em;
+}
+
+.richtext-content li {
+    margin-bottom: 0.5em;
+}
+
+/* ==========================================================================
+   8. 响应式规则 (Media Queries)
+   ========================================================================== */
+@media (min-width: 760px) {
+    .events-list,
+    .news-grid,
+    .research-grid,
+    .media-list {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+
+    .section-header {
+        flex-wrap: nowrap;
+    }
+}
+
+@media (max-width: 1040px) {
+    .header-wrapper {
+        width: 100%;
+    }
+    .header-left,
+    .header-right {
+        flex: 0 0 auto;
+    }
+    .nav-links {
+        gap: 1.2rem;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 760px) {
+    .header-wrapper {
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    .header-center {
+        width: 100%;
+        order: 3;
+        margin-top: 0.8rem;
+    }
+    .nav-links {
+        justify-content: center;
+        gap: 1rem;
+    }
+    .search-container {
+        width: 100%;
+        order: 2;
+    }
+    .hero-overlay {
+        padding: 2.2rem 1.4rem;
+    }
+}

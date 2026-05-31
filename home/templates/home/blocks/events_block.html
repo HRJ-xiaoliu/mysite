@@ -1,0 +1,41 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+<section class="events-section container">
+    <div class="section-header">
+        <h2>{{ value.title }}</h2>
+        {% if value.subtitle %}
+            <span class="section-subtitle">{{ value.subtitle }}</span>
+        {% endif %}
+        {% if value.view_more_link %}
+            <a href="{{ value.view_more_link }}" class="view-more">查看更多</a>
+        {% endif %}
+    </div>
+    <div class="events-list">
+        {% for event in value.events %}
+            <div class="event-item">
+                
+                {% if event.image %}
+                    <div class="event-image-wrapper">
+                        {% image event.image fill-400x300 as img %}
+                        <img src="{{ img.url }}" alt="{{ event.title }}" class="event-thumbnail">
+                    </div>
+                {% endif %}
+
+                <div class="event-content">
+                    <h3>{{ event.title }}</h3>
+                    
+                    <div class="event-meta">
+                        <span class="event-time">{{ event.time }}</span>
+                        <span class="event-location">{{ event.location }}</span>
+                    </div>
+
+                    {% if event.description %}
+                        <div class="event-description richtext-content">
+                            {{ event.description|richtext }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</section>

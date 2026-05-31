@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags %}
+
+{% block body_class %}template-searchresults{% endblock %}
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+
+<div class="container search-results-page">
+    
+<div class="search-bar-section">
+    <form action="{% url 'search' %}" method="get" class="inline-search-form">
+        <input type="text" name="q" value="{{ search_query|default:'' }}" class="search-input" placeholder="输入关键词...">
+        <button type="submit" class="inner-search-btn">搜索</button>
+    </form>
+</div>
+
+    <div class="results-section">
+        {% if search_query %}
+            <h2>为您找到关于“{{ search_query }}”的结果：</h2>
+            
+            {% if search_results %}
+                <ul class="results-list">
+                    {% for result in search_results %}
+                        {% with post=result.specific %}
+                        <li class="result-item">
+                            <h3><a href="{% pageurl post %}">{{ post.title }}</a></h3>
+                            <div class="search-snippet">
+                                {% if post.intro %}
+                                    <p>{{ post.intro|striptags|truncatechars:160 }}</p>
+                                {% elif post.body %}
+                                    <p>{{ post.body|striptags|truncatechars:160 }}</p>
+                                {% elif post.search_description %}
+                                    <p>{{ post.search_description }}</p>
+                                {% else %}
+                                    <p>匹配成功，该条目暂无文本摘要展示。</p>
+                                {% endif %}
+                            </div>
+                        </li>
+                        {% endwith %}
+                    {% endfor %}
+                </ul>
+
+                <div class="pagination">
+                    {% if search_results.has_previous %}
+                        <a href="?q={{ search_query }}&page={{ search_results.previous_page_number }}">上一页</a>
+                    {% endif %}
+                    {% if search_results.has_next %}
+                        <a href="?q={{ search_query }}&page={{ search_results.next_page_number }}">下一页</a>
+                    {% endif %}
+                </div>
+
+            {% else %}
+                <p>抱歉，没有找到匹配的页面。</p>
+            {% endif %}
+
+        {% else %}
+            <p>请输入关键词进行搜索。</p>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

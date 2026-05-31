@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block extra_css %}
+    <style>
+        /* 强行抹除全局主体容器在主页的顶端物理补偿，恢复通顶拓扑 */
+        #main {
+            padding-top: 0 !important;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    {# 必须移除原本在此处的冗余主体标签，使文档对象树回归纯净单层结构 #}
+    {% for block in page.body %}
+        {% include_block block %}
+    {% endfor %}
+{% endblock %}

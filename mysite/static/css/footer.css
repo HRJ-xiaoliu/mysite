@@ -1,0 +1,121 @@
+footer {
+    position: relative;
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(16px);
+    color: var(--text-strong);
+    padding: .64rem 0 .32rem;
+    border-top: 1px solid var(--border-soft);
+    box-shadow: 0 -10px 30px rgba(11, 79, 138, 0.04);
+    z-index: 10;
+}
+
+.footer-content {
+    width: var(--global-width);
+    max-width: var(--max-content-width);
+    margin: 0 auto;
+    /* 引入弹性盒模型替代网格布局，实现子元素的自适应居中对齐 */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+}
+
+/* 声明子容器的物理约束，防止极端情况下的弹性挤压变形 */
+.footer-section {
+    flex: 0 1 auto;
+    min-width: 1.5rem;
+}
+
+.footer-section h3 {
+    font-size: 0.176rem;
+    margin-bottom: 0.15rem; /* 修正了可能存在的一百五十像素间距异常 */
+    color: var(--primary-blue);
+    background: linear-gradient(120deg, var(--text-strong) 0%, var(--primary-blue) 50%, var(--text-strong) 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transition: background-position 0.4s ease;
+}
+
+.footer-section h3:hover {
+    animation: textShimmer 3s linear infinite;
+}
+
+.footer-section p,
+.footer-section li,
+.footer-section a {
+    color: var(--text-muted);
+    font-size: 0.152rem;
+    line-height: 1.8;
+}
+
+.footer-section a {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 2px;
+    transition: color var(--trans-base);
+    text-decoration: none;
+}
+
+.footer-section a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--primary-blue);
+    transition: width var(--trans-slow) cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 -1px 5px rgba(11, 79, 138, 0.3);
+}
+
+.footer-section a:hover,
+.footer-section a:focus {
+    color: var(--primary-blue);
+    text-shadow: 0 0 10px rgba(11, 79, 138, 0.15);
+}
+
+.footer-section a:hover::after,
+.footer-section a:focus::after {
+    width: 100%;
+}
+
+.footer-bottom {
+    width: var(--global-width);
+    max-width: var(--max-content-width);
+    margin: .5rem auto 0;
+    border-top: 1px solid rgba(11, 79, 138, 0.1);
+    padding-top: .75rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.152rem;
+    color: var(--text-muted);
+}
+
+.footer-bottom a {
+    color: var(--primary-blue);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-bottom a:hover {
+    color: var(--text-strong);
+}
+
+/* 剥离失效的网格媒体查询，针对极限压缩的移动端视口启用垂直流降级 */
+@media (max-width: 760px) {
+    .footer-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.4rem;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

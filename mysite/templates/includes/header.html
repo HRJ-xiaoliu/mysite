@@ -1,0 +1,39 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+{% wagtail_site as current_site %}
+
+{% with home_page=current_site.root_page.specific %}
+<header class="alt-hdr-academic {% if home_page.header_background %}has-bg{% endif %}">
+    {% if home_page.header_background %}
+        {% image home_page.header_background fill-1920x150 as bg_img %}
+        <div class="alt-hdr-bg-layer" style="background-image: url('{{ bg_img.url }}');"></div>
+    {% endif %}
+
+    <div class="alt-hdr-wrapper">
+        
+        <div class="alt-hdr-left">
+            <a href="{% pageurl home_page %}" class="alt-hdr-logo-text">
+                {{ home_page.title }}
+            </a>
+        </div>
+
+        <nav class="alt-hdr-center">
+            <ul class="alt-hdr-nav-links">
+                {% if page.id != home_page.id %}
+                    <li><a href="{% pageurl home_page %}" class="{% if request.path == '/' %}active{% endif %}">首页</a></li>
+                {% endif %}
+                <li><a href="{% slugurl 'team' %}" class="{% if '/team/' in request.path %}active{% endif %}">我们的成员</a></li>
+                <li><a href="{% slugurl 'research' %}" class="{% if '/research/' in request.path %}active{% endif %}">我们的研究</a></li>
+                <li><a href="{% slugurl 'news' %}" class="{% if '/news/' in request.path %}active{% endif %}">最近的新闻</a></li>
+                <li><a href="{% slugurl 'think' %}" class="{% if '/think/' in request.path %}active{% endif %}">一些想法</a></li>
+            </ul>
+        </nav>
+
+        <div class="custom-search-box">
+            <form action="/search/" method="get">
+                <input type="text" name="q" placeholder="请输入搜索内容" required class="search-input">
+                <button type="submit" class="search-submit-btn">搜索</button>
+            </form>
+        </div>
+    </div>
+</header>
+{% endwith %}

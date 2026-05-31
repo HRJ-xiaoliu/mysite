@@ -1,0 +1,38 @@
+
+{% load wagtailcore_tags wagtailimages_tags %}
+
+<section class="research-section container">
+    <div class="section-header">
+        <h2>{{ value.title }}</h2>
+        {% if value.subtitle %}
+            <span class="section-subtitle">{{ value.subtitle }}</span>
+        {% endif %}
+        {% if value.view_more_link %}
+            <a href="{{ value.view_more_link }}" class="view-more">查看更多</a>
+        {% endif %}
+    </div>
+    <div class="research-grid">
+        {% for item in value.research_items %}
+            <div class="research-item">
+                
+                {% if item.image %}
+                    <div class="research-image-wrapper">
+                        {% image item.image fill-400x250 as img %}
+                        <img src="{{ img.url }}" alt="{{ item.title }}" class="research-thumbnail">
+                    </div>
+                {% endif %}
+
+                <div class="research-content">
+                    <h3>{{ item.title }}</h3>
+                    
+                    {% if item.description %}
+                        <div class="research-description richtext-content">
+                            {{ item.description|richtext }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+            </div>
+        {% endfor %}
+    </div>
+</section>

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/members.css' %}">
+{% endblock %}
+
+{% block header %}
+    {% include "includes/header.html" %}
+{% endblock %}
+
+{% block content %}
+<main class="member-system-wrapper">
+    <div class="member-container">
+        
+        <aside class="member-sidebar">
+            <div class="sidebar-sticky">
+                <h2 class="sidebar-title">团队成员</h2>
+                <nav class="member-nav">
+                    <div class="nav-group">
+                        <h3 class="group-label">教职人员 / Staff</h3>
+                        <ul class="nav-list">
+                            {% for teacher in page.get_parent.specific.get_context.teachers %}
+                            <li>
+                                <a href="{% pageurl teacher %}" class="nav-item {% if page.id == teacher.id %}active{% endif %}">
+                                    {{ teacher.title }} <span>{{ teacher.specific.professional_title }}</span>
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </aside>
+
+        <section class="member-main-content">
+            <div class="profile-card">
+                
+                <header class="profile-header-layout">
+                    <div class="avatar-container">
+                        {% if page.avatar %}
+                            {% image page.avatar fill-175x243 as avatar_img %}
+                            <img src="{{ avatar_img.url }}" alt="{{ page.title }}" class="avatar-image">
+                        {% else %}
+                            <div class="avatar-placeholder">👨‍🏫</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="profile-info-layout">
+                        <div>
+                            <h1 class="profile-name">{{ page.title }}</h1>
+                            <div class="profile-meta-row">
+                                <span class="meta-item"><strong>性别：</strong> {{ page.get_gender_display }}</span>
+                                <span class="meta-item"><strong>职称：</strong> {{ page.professional_title }}</span>
+                                <span class="meta-item"><strong>研究方向：</strong> {{ page.research_direction }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <article class="profile-content-area">
+                    {% for block in member.dynamic_content %}
+                        {% if block.block_type == 'heading' %}
+                            <h2 class="stream-heading">{{ block.value }}</h2>
+                        {% elif block.block_type == 'paragraph' %}
+                            <div class="stream-paragraph rich-text-content">
+                                {{ block.value|richtext }}
+                            </div>
+                        {% elif block.block_type == 'image' %}
+                            <div class="stream-image-wrapper">
+                                {% image block.value width-800 as inline_img %}
+                                <img src="{{ inline_img.url }}" alt="插图">
+                            </div>
+                        {% else %}
+                            {% include_block block %}
+                        {% endif %}
+                    {% endfor %}
+                </article>
+            </div>
+        </section>
+
+    </div>
+</main>
+{% endblock %}
