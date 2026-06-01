@@ -1,3 +1,4 @@
+from wagtail import blocks
 from wagtail.blocks import (
     CharBlock,
     PageChooserBlock,
@@ -116,6 +117,44 @@ class ResearchBlock(StructBlock):
     class Meta:
         template = "home/blocks/research_block.html"
 
+class DynamicContentBlock(blocks.StructBlock):
+    title = blocks.CharBlock(required=True, label="版块主标题", default="最新动态")
+    subtitle = blocks.CharBlock(required=False, label="版块副标题", default="NEWS")
+    
+    app_label_model = blocks.ChoiceBlock(
+        choices=[
+            ['research.ResearchPage', '学术研究与调研'], 
+            ['blog.BlogPage', '新闻和文章'],
+        ],
+        label="数据来源"
+    )
+    
+    item_count = blocks.IntegerBlock(default=4, min_value=1, max_value=12, label="展示数量")
+    view_more_link = blocks.URLBlock(required=False, label="查看更多链接")
+
+    def get_context(self, value, parent_context=None):
+        context = super().get_context(value, parent_context=parent_context)
+        model_choice = value.get('app_label_model')
+
+        if model_choice == 'research.ResearchPage':
+            from research.models import ResearchPage as TargetModel
+        elif model_choice == 'blog.BlogPage':
+            from blog.models import BlogPage as TargetModel
+        else:
+            TargetModel = None
+        
+        if TargetModel:
+            context['latest_items'] = TargetModel.objects.live().order_by('-first_published_at')[:value.get('item_count')]
+        else:
+            context['latest_items'] = []
+            
+        return context
+
+    class Meta:
+        template = 'blocks/dynamic_content_block.html'
+        icon = 'list-ul'
+        label = '动态内容聚合版块'
+
 class HomeStreamBlock(StreamBlock):
     hero = HeroCarouselBlock()
     news = NewsBlock()
@@ -123,3 +162,4 @@ class HomeStreamBlock(StreamBlock):
     events = EventsBlock()
     education = EducationBlock()
     research = ResearchBlock()
+    dynamic_section = DynamicContentBlock()

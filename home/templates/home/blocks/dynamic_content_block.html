@@ -1,0 +1,30 @@
+<section class="dynamic-section module-container">
+    <div class="section-header">
+        <div class="title-group">
+            <h2>{{ self.title }}</h2>
+            {% if self.subtitle %}
+                <span class="section-subtitle">{{ self.subtitle }}</span>
+            {% endif %}
+        </div>
+        
+        {% if self.view_more_link %}
+            <a href="{{ self.view_more_link }}" class="view-more">查看全部</a>
+        {% endif %}
+    </div>
+    
+    <div class="dynamic-grid">
+        {% for item in latest_items %}
+            <article class="dynamic-item">
+                <div class="item-content">
+                    <div class="item-meta">
+                        <span class="date">{{ item.first_published_at|date:"Y-m-d" }}</span>
+                    </div>
+                    <h3><a href="{{ item.url }}">{{ item.title }}</a></h3>
+                    <p class="item-description">
+                        {{ item.search_description|default:"深入探索相关领域的详细内容与研究动态" }}
+                    </p>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+</section>

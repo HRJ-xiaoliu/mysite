@@ -278,6 +278,99 @@
 }
 
 /* ==========================================================================
+   动态内容聚合版块样式 (Dynamic Sections)
+   ========================================================================== */
+
+/* 承载整个版块的外部容器 */
+.module-container {
+    width: min(92%, 1980px);
+    margin: 0 auto 0.6rem auto;
+    padding: clamp(.32rem, 3vw, .52rem) var(--global-padding-x);
+    background: rgba(255, 255, 255, 0.98); /* 极微弱的透明度，确保学术内容的白底阅读体验 */
+    border: 1px solid rgba(15, 23, 42, 0.08); /* 极细的冷灰色边框，划定严密的边界 */
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02); /* 极其克制的底层阴影 */
+    transition: box-shadow 0.4s ease;
+}
+
+.module-container:hover {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+}
+
+/* 内部自适应网格，处理不同数量卡片的排布 */
+.dynamic-grid {
+    display: grid;
+    /* [核心逻辑] 自动计算列数，最小宽度 320px，填满剩余空间，保证多端阅读体验 */
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 0.32rem;
+    margin-top: 0.24rem;
+}
+
+/* 独立的单条内容卡片 */
+.dynamic-item {
+    position: relative;
+    padding: 0.24rem;
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    border-radius: 8px;
+    /* 引入物理阻尼感的过渡效果，包含位移、边框颜色和阴影 */
+    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    z-index: 1;
+}
+
+/* 卡片悬停时的交互反馈 */
+.dynamic-item:hover {
+    transform: translateY(-4px); /* 轻微上浮 */
+    border-color: rgba(14, 116, 144, 0.3); /* 边框泛起科技蓝色微光 */
+    box-shadow: 0 12px 32px rgba(14, 116, 144, 0.06); /* 带有色彩倾向的环境投影 */
+    z-index: 2;
+}
+
+/* 文本排印体系 */
+.item-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.12rem;
+}
+
+.item-meta .date {
+    font-size: 0.14rem;
+    color: #64748b;
+    font-weight: 500;
+    font-family: 'SourceHanSansCN-Medium', sans-serif;
+    letter-spacing: 0.05em;
+}
+
+.item-content h3 {
+    font-size: 0.2rem;
+    line-height: 1.4;
+    margin: 0;
+    font-family: 'SourceHanSansCN-Bold', sans-serif;
+}
+
+.item-content h3 a {
+    color: #1e293b;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.item-content h3 a:hover {
+    color: #0e7490;
+}
+
+/* 摘要文本的视觉截断逻辑 */
+.item-description {
+    font-size: 0.15rem;
+    line-height: 1.6;
+    color: #475569;
+    margin: 0;
+    /* [核心逻辑] 多行文本截断，超出 3 行自动显示省略号 */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+/* ==========================================================================
    8. 响应式规则 (Media Queries)
    ========================================================================== */
 @media (min-width: 760px) {
