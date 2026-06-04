@@ -4,9 +4,10 @@ from wagtail.fields import StreamField, RichTextField
 from wagtail.admin.panels import FieldPanel
 from wagtail import blocks
 from wagtail.images.blocks import ImageChooserBlock
+from wagtail.search import index
 from home.models import GlobalSearchMixin
 
-class MemberSdPage( GlobalSearchMixin ):
+class MemberSdPage(Page, GlobalSearchMixin):
     template = "members/member_sd.html"
 
     STATUS_CHOICES = [
@@ -43,6 +44,12 @@ class MemberSdPage( GlobalSearchMixin ):
         ('image', ImageChooserBlock(label="插图")),
     ], use_json_field=True, blank=True, verbose_name="详细信息拓展区")
 
+    search_fields = Page.search_fields + [
+        index.SearchField('academic_status'),
+        index.SearchField('degree_type'),
+        index.SearchField('dynamic_content'),
+    ]
+
     content_panels = Page.content_panels + [
         FieldPanel('avatar'),
         FieldPanel('academic_status'),
@@ -53,7 +60,7 @@ class MemberSdPage( GlobalSearchMixin ):
     ]
 
 
-class MemberTcPage( GlobalSearchMixin ):
+class MemberTcPage(Page, GlobalSearchMixin):
     template = "members/member_tc.html"
 
     GENDER_CHOICES = [
@@ -84,6 +91,12 @@ class MemberTcPage( GlobalSearchMixin ):
         ('image', ImageChooserBlock(label="相关插图")),
     ], use_json_field=True, blank=True, verbose_name="其他信息展示区")
 
+    search_fields = Page.search_fields + [
+        index.SearchField('professional_title'),
+        index.SearchField('research_direction'),
+        index.SearchField('dynamic_content'),
+    ]
+
     content_panels = Page.content_panels + [
         FieldPanel('avatar'),
         FieldPanel('gender'),
@@ -93,10 +106,14 @@ class MemberTcPage( GlobalSearchMixin ):
     ]
 
 
-class MemberIndexPage( GlobalSearchMixin ):
+class MemberIndexPage(Page, GlobalSearchMixin):
     template = "members/member_index_page.html"
     
     intro = RichTextField(blank=True, verbose_name="页面简介")
+
+    search_fields = Page.search_fields + [
+        index.SearchField('intro'),
+    ]
 
     content_panels = Page.content_panels + [
         FieldPanel('intro'),

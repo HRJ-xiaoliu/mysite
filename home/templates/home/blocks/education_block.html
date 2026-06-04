@@ -1,19 +1,22 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 
-<section class="education-section container">
+<section class="education-section module-container">
     <div class="section-header">
-        <h2>{{ value.title }}</h2>
-        {% if value.subtitle %}
-            <span class="section-subtitle">{{ value.subtitle }}</span>
-        {% endif %}
+        <div class="title-group">
+            <h2>{{ value.title }}</h2>
+            {% if value.subtitle %}
+                <span class="section-subtitle">{{ value.subtitle }}</span>
+            {% endif %}
+        </div>
+        
         {% if value.view_more_link %}
             <a href="{{ value.view_more_link }}" class="view-more">查看更多</a>
         {% endif %}
     </div>
+    
     <div class="education-list">
         {% for education in value.education %}
-            <div class="ed-item">
-                
+            <article class="education-item" style="overflow: hidden;">
                 {% if education.image %}
                     <div class="education-image-wrapper">
                         {% image education.image fill-400x300 as img %}
@@ -24,18 +27,18 @@
                 <div class="education-content">
                     <h3>{{ education.title }}</h3>
                     
-                    <div class="event-meta">
+                    <div class="education-meta">
                         <span class="event-time">{{ education.time }}</span>
                         <span class="event-location">{{ education.location }}</span>
                     </div>
 
                     {% if education.description %}
-                        <div class="event-description richtext-content">
+                        <div class="education-description richtext-content">
                             {{ education.description|richtext }}
                         </div>
                     {% endif %}
                 </div>
-            </div>
+            </article>
         {% endfor %}
     </div>
 </section>

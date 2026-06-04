@@ -29,12 +29,7 @@
           <h2><a href="{% slugurl 'research' %}" class="{% if '/research/' in request.path %}active{% endif %}">我们的研究</a></h2>
           <div class="sub">
             <div class="box">
-                  <a href="zsjy/bkszs.htm">本科生招生</a>
-                  <a href="zsjy/yjszs.htm">研究生招生</a>
-                  <a href="https://ic.hzau.edu.cn">留学生招生</a>
-                  <a href="zsjy/jxjy.htm">继续教育</a>
-                  <a href="zsjy/bksjy.htm">本科生就业</a>
-                  <a href="zsjy/yjsjy.htm">研究生就业</a>
+                 
             </div>
           </div>
         </li>
@@ -42,19 +37,14 @@
           <h2><a href="{% slugurl 'news' %}" class="{% if '/news/' in request.path %}active{% endif %}">最近的新闻</a></h2>
           <div class="sub">
             <div class="box">
-                  <a href="hzjl/kjhz.htm">科技合作</a>
-                  <a href="https://fao.hzau.edu.cn/">国际合作</a>
-            </div>
+                  
           </div>
         </li>
         <li>
           <h2><a href="{% slugurl 'think' %}" class="{% if '/think/' in request.path %}active{% endif %}">一些想法</a></h2>
           <div class="sub">
             <div class="box">
-                  <a href="zjhn/hdyg.htm">活动预告</a>
-                  <a href="zjhn/dxwh.htm">大学文化</a>
-                  <a href="zjhn/syxx.htm">实用信息</a>
-                  <a href="https://news.hzau.edu.cn/sssj.htm">校园风光</a>
+                  
             </div>
           </div>
         </li>
@@ -68,13 +58,18 @@
                 <div id="appu7">
                     <div>
                         <div class="input-group pore">
-                            <input type="text" placeholder="输入关键词搜索..." autocomplete="off" class="inp"> 
-                            <input type="submit" value="" class="sub" style="z-index: 9;"> 
-                            <button type="submit" class="sub"></button>
+                            <input type="text" id="global-search-input" placeholder="输入关键词搜索..." autocomplete="off" class="inp"> 
+                            <button type="button" id="global-search-btn" class="sub custom-lens-btn" style="z-index: 9;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                </svg>
+                            </button>
                         </div>
                     </div> 
                 </div>
             </div>
+
             <script type="text/html" id="htmlu7">
                 <div id="appu7">
                     <div v-if="!isError">
@@ -239,6 +234,35 @@ window.addEventListener('scroll', function() {
     
     lastScrollCoordinate = currentScrollCoordinate <= 0 ? 0 : currentScrollCoordinate;
 }, { passive: true });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var searchInput = document.getElementById('global-search-input');
+        var searchBtn = document.getElementById('global-search-btn');
+
+        function executeSearch() {
+            var queryText = searchInput.value.trim();
+            if (queryText) {
+                window.location.href = '/search/?q=' + encodeURIComponent(queryText);
+            } else {
+                alert("请输入需要检索的学术或新闻关键词");
+            }
+        }
+
+        if (searchBtn) {
+            searchBtn.addEventListener('click', executeSearch);
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    executeSearch();
+                }
+            });
+        }
+    });
 </script>
 
 {% endwith %}

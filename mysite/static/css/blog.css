@@ -26,6 +26,7 @@
     width: min(92%, 1980px);
     max-width: 1980px;
     margin: 0 auto;
+    padding-top: 40px;
 }
 
 /* 2. 页面头部 (Header) 专项美化 */

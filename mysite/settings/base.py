@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "search",
     "members",
     "mysite",
+    'wagtail.contrib.search_promotions',
     "django.contrib.contenttypes",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",

@@ -1,18 +1,22 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 
-<section class="news-section container">
+<section class="news-section module-container">
     <div class="section-header">
-        <h2>{{ value.title }}</h2>
-        {% if value.subtitle %}
-            <span class="section-subtitle">{{ value.subtitle }}</span>
-        {% endif %}
+        <div class="title-group">
+            <h2>{{ value.title }}</h2>
+            {% if value.subtitle %}
+                <span class="section-subtitle">{{ value.subtitle }}</span>
+            {% endif %}
+        </div>
+        
         {% if value.view_more_link %}
-            <a href="{{ value.view_more_link }}" class="view-more">进入新闻网</a>
+            <a href="{{ value.view_more_link }}" class="view-more">进入新闻页</a>
         {% endif %}
     </div>
+    
     <div class="news-grid">
         {% for item in value.news_items %}
-            <div class="news-item">
+            <article class="news-item">
                 
                 {% if item.image %}
                     <div class="news-image-wrapper">
@@ -35,7 +39,7 @@
                     </div>
                 </div>
                 
-            </div>
+            </article>
         {% endfor %}
     </div>
 </section>

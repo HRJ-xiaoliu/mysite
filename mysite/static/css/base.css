@@ -291,42 +291,67 @@ section {
     overflow: hidden;
 }
 
-/* 统一卡片的悬停交互 */
-.feature-card,
-.blog-post-item,
-.related-post-card,
+/* 统一卡片与动效逻辑 */
+.dynamic-item,
 .event-item,
 .news-item,
-.research-item {
-    transition: transform var(--trans-slow), box-shadow var(--trans-slow);
+.research-item,
+.media-item,
+.education-item,
+.feature-card,
+.blog-post-item,
+.related-post-card {
+    position: relative;
+    padding: 0.24rem;
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    border-radius: .08rem;
+    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.5s cubic-bezier(0.19, 1, 0.22, 1), border-color 0.5s cubic-bezier(0.19, 1, 0.22, 1);
     will-change: transform, box-shadow;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: .18rem;
 }
 
-.feature-card:hover,
-.blog-post-item:hover,
-.related-post-card:hover,
+.dynamic-item:hover,
 .event-item:hover,
 .news-item:hover,
-.research-item:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-card-hover);
+.research-item:hover,
+.media-item:hover,
+.education-item:hover,
+.feature-card:hover,
+.blog-post-item:hover,
+.related-post-card:hover {
+    transform: translateY(-.04rem);
+    border-color: rgba(14, 116, 144, 0.3);
+    box-shadow: 0 .12rem .32rem rgba(14, 116, 144, 0.06);
+    z-index: 2;
 }
 
-.feature-card img,
-.blog-post-item img,
-.related-post-card img,
+/* 统一卡片内图片的悬停缩放逻辑 */
+.dynamic-item img,
 .event-item img,
 .news-item img,
-.research-item img {
-    transition: transform var(--trans-slow), opacity var(--trans-slow);
+.research-item img,
+.media-item img,
+.education-item img,
+.feature-card img,
+.blog-post-item img,
+.related-post-card img {
+    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    will-change: transform;
 }
 
-.feature-card:hover img,
-.blog-post-item:hover img,
-.related-post-card:hover img,
+.dynamic-item:hover img,
 .event-item:hover img,
 .news-item:hover img,
-.research-item:hover img {
+.research-item:hover img,
+.media-item:hover img,
+.education-item:hover img,
+.feature-card:hover img,
+.blog-post-item:hover img,
+.related-post-card:hover img {
     transform: scale(1.05);
 }
 

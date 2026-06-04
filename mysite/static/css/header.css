@@ -183,6 +183,30 @@
     filter: brightness(1.15);
 }
 
+.custom-lens-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent !important;
+    transition: all 0.3s ease;
+}
+
+.custom-lens-btn::after {
+    display: none !important;
+}
+
+.custom-lens-btn svg {
+    width: 0.2rem;
+    height: 0.2rem;
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.7)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.4s ease;
+}
+
+.custom-lens-btn:hover svg {
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.95)) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
+}
+
 /* 响应式降级：在较小屏幕上剥离强制的两百像素外边距以维持物理结构的完整 */
 @media (max-width: 1040px) {
     .alt-hdr-wrapper {

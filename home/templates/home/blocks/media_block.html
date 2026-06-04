@@ -1,32 +1,34 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 
-<section class="media-section container">
+<section class="media-section module-container">
     <div class="section-header">
-        <h2>{{ value.title }}</h2>
-        {% if value.subtitle %}
-            <span class="section-subtitle">{{ value.subtitle }}</span>
+        <div class="title-group">
+            <h2>{{ value.title }}</h2>
+            {% if value.subtitle %}
+                <span class="section-subtitle">{{ value.subtitle }}</span>
+            {% endif %}
+        </div>
+        {% if value.view_more_link %}
+            <a href="{{ value.view_more_link }}" class="view-more">查看更多</a>
         {% endif %}
     </div>
     <div class="media-list">
         {% for item in value.media_items %}
-            <div class="media-item" style="display: flex; gap: 20px; margin-bottom: 30px;">
-                
+            <article class="media-item">
                 {% if item.image %}
-                    <div class="media-image-container" style="flex-shrink: 0;">
+                    <div class="media-image-container">
                         {% image item.image fill-320x240 as img %}
-                        <img src="{{ img.url }}" alt="{{ item.title }}" class="media-thumbnail" style="border-radius: 8px; object-fit: cover;">
+                        <img src="{{ img.url }}" alt="{{ item.title }}" class="media-thumbnail">
                     </div>
                 {% endif %}
 
                 <div class="media-content">
-                    <div class="media-meta" style="margin-bottom: 10px; color: #666;">
+                    <h3><a href="{{ item.link }}">{{ item.title }}</a></h3>
+                    
+                    <div class="media-meta">
                         <span class="media-source">{{ item.source }}</span> | 
                         <span class="media-date">{{ item.date }}</span>
                     </div>
-                    
-                    <h3 style="margin-top: 0;">
-                        <a href="{{ item.link }}">{{ item.title }}</a>
-                    </h3>
                     
                     {% if item.description %}
                         <div class="media-description richtext-content">
@@ -34,8 +36,7 @@
                         </div>
                     {% endif %}
                 </div>
-                
-            </div>
+            </article>
         {% endfor %}
     </div>
 </section>
