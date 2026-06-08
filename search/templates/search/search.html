@@ -1,64 +1,245 @@
 {% extends "base.html" %}
-{% load static wagtailcore_tags %}
+{% load static wagtailcore_tags wagtailimages_tags %}
 
 {% block body_class %}template-searchresults{% endblock %}
 
-{% block title %}Search{% endblock %}
+{% block title %}搜索结果 - {{ search_query }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .search-header-zone {
+        background: #f9f9f9;
+        padding-top: 1rem;
+        margin-bottom: 30px;
+        border-bottom: 1px solid #e6e6e6;
+    }
+    .search-header-zone .search-box {
+        max-width: 800px;
+        margin: 0 auto;
+        display: flex;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    .search-header-zone .search-input {
+        flex: 1;
+        height: 50px;
+        border: 1px solid #e6e6e6;
+        border-right: none;
+        padding: 0 20px;
+        font-size: 16px;
+        outline: none;
+    }
+    .search-header-zone .search-btn {
+        width: 120px;
+        height: 50px;
+        background: #06273a;
+        color: #fff;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .search-header-zone .search-btn:hover {
+        background: #d42215;
+    }
+    .search-meta-info {
+        max-width: 1200px;
+        margin: 20px auto 0;
+        color: #666;
+        font-size: 14px;
+    }
+
+    .v10_search_list {
+        max-width: 1200px;
+        margin: 0 auto 60px;
+    }
+    .search-item-row {
+        display: flex;
+        padding: 25px 0;
+        border-bottom: 1px dashed #e6e6e6;
+        gap: 20px;
+        transition: background 0.3s ease;
+    }
+    .search-item-row:hover {
+        background: #fafafa;
+    }
+
+    .search-item-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+    .search-item-title {
+        font-size: 20px;
+        font-weight: bold;
+        line-height: 1.4;
+        margin-bottom: 12px;
+    }
+    .search-item-title a {
+        color: #1a1f24;
+        transition: color 0.3s;
+    }
+    .search-item-title a:hover {
+        color: #d42215;
+    }
+    .search-item-snippet {
+        font-size: 14px;
+        color: #546b77;
+        line-height: 1.8;
+        margin-bottom: 15px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .search-item-meta {
+        font-size: 13px;
+        color: #999;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-top: auto;
+    }
+    .search-item-meta .meta-tag {
+        color: #06273a;
+        font-weight: bold;
+    }
+
+    .highlight-keyword {
+        color: #d42215 !important;
+        font-weight: bold;
+    }
+
+    .pagination-container {
+        text-align: center;
+        margin: 40px 0;
+    }
+    .pagination-container a, .pagination-container span.active {
+        display: inline-block;
+        padding: 8px 16px;
+        margin: 0 4px;
+        border-radius: 4px;
+        font-size: 14px;
+        color: #333;
+        background: #f9f9f9;
+        transition: all 0.3s;
+    }
+    .pagination-container a:hover, .pagination-container .active {
+        background: #06273a;
+        color: #fff;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
+    {% block header %}
+        {% include "includes/header.html" %}
+    {% endblock %}
 
-<div class="container search-results-page">
-    
-<div class="search-bar-section">
-    <form action="{% url 'search' %}" method="get" class="inline-search-form">
-        <input type="text" name="q" value="{{ search_query|default:'' }}" class="search-input" placeholder="输入关键词...">
-        <button type="submit" class="inner-search-btn">搜索</button>
-    </form>
-</div>
-
-    <div class="results-section">
+    <div class="search-header-zone">
+        <form action="{% url 'search' %}" method="get" class="search-box">
+            <input type="text" name="q" value="{{ search_query|default:'' }}" class="search-input" placeholder="输入关键词检索全站内容...">
+            <button type="submit" class="search-btn">搜 索</button>
+        </form>
         {% if search_query %}
-            <h2>为您找到关于“{{ search_query }}”的结果：</h2>
-            
-            {% if search_results %}
-                <ul class="results-list">
-                    {% for result in search_results %}
-                        {% with post=result.specific %}
-                        <li class="result-item">
-                            <h3><a href="{% pageurl post %}">{{ post.title }}</a></h3>
-                            <div class="search-snippet">
-                                {% if post.intro %}
-                                    <p>{{ post.intro|striptags|truncatechars:160 }}</p>
-                                {% elif post.body %}
-                                    <p>{{ post.body|striptags|truncatechars:160 }}</p>
-                                {% elif post.search_description %}
-                                    <p>{{ post.search_description }}</p>
-                                {% else %}
-                                    <p>匹配成功，该条目暂无文本摘要展示。</p>
-                                {% endif %}
-                            </div>
-                        </li>
-                        {% endwith %}
-                    {% endfor %}
-                </ul>
+            <div class="search-meta-info">
+                智能检索为您找到关于 <strong class="highlight-keyword">“{{ search_query }}”</strong> 的相关结果共 {{ paginator.count }} 个
+            </div>
+        {% endif %}
+    </div>
 
-                <div class="pagination">
+    <main class="v10_search_list">
+        {% if search_query %}
+            {% if search_results %}
+                <div class="search-list-wrapper">
+                    {% for item in search_results %}
+                        <article class="search-item-row searchable-node">
+                            <div class="search-item-content">
+                                <h3 class="search-item-title target-text">
+                                    <a href="{{ item.url }}">{{ item.title }}</a>
+                                </h3>
+                                
+                                <div class="search-item-snippet target-text">
+                                    {% if item.snippet %}
+                                        {{ item.snippet|striptags|truncatechars:180|safe }}
+                                    {% else %}
+                                        系统已精准捕获目标特征，请点击标题查阅详情文档。
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="search-item-meta">
+                                    {% if item.date %}
+                                        <span>发布时间：{{ item.date|date:"Y-m-d H:i" }}</span>
+                                    {% endif %}
+                                    {% if item.source %}
+                                        <span>来源：{{ item.source }}</span>
+                                    {% endif %}
+                                    <span class="meta-tag">板块：{{ item.type_label }}</span>
+                                </div>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+
+                {% if paginator.num_pages > 1 %}
+                <div class="pagination-container">
                     {% if search_results.has_previous %}
                         <a href="?q={{ search_query }}&page={{ search_results.previous_page_number }}">上一页</a>
                     {% endif %}
+                    <span class="active">第 {{ search_results.number }} / {{ paginator.num_pages }} 页</span>
                     {% if search_results.has_next %}
                         <a href="?q={{ search_query }}&page={{ search_results.next_page_number }}">下一页</a>
                     {% endif %}
                 </div>
+                {% endif %}
 
             {% else %}
-                <p>抱歉，没有找到匹配的页面。</p>
+                <div style="text-align: center; padding: 80px 0; color: #999;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="width: 64px; height: 64px; margin-bottom: 20px;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <h2 style="font-size: 20px; font-weight: normal;">未找到包含指定检索词的学术记录或文章节点</h2>
+                    <p style="margin-top: 10px; font-size: 14px;">建议您检查拼写、缩减关键词长度，或使用更为广泛的同义词进行重新检索。</p>
+                </div>
             {% endif %}
-
+            
         {% else %}
-            <p>请输入关键词进行搜索。</p>
+            <div style="text-align: center; padding: 100px 0; color: #ccc;">
+                <p style="font-size: 18px;">请输入学术特征词以启动检索引擎</p>
+            </div>
         {% endif %}
-    </div>
+    </main>
+{% endblock %}
 
-</div>
+{% block extra_js %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var rawQuery = "{{ search_query|escapejs }}";
+        if (!rawQuery.trim()) return;
+
+        var queryList = rawQuery.split(/\s+/).filter(Boolean);
+        var searchNodes = document.querySelectorAll('.searchable-node .target-text');
+
+        queryList.forEach(function(query) {
+            var regex = new RegExp("(" + query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + ")", "gi");
+            searchNodes.forEach(function(node) {
+                var walk = document.createTreeWalker(node, NodeFilter.SHOW_TEXT, null, false);
+                var textNodes = [];
+                var n;
+                while(n = walk.nextNode()) {
+                    textNodes.push(n);
+                }
+                
+                textNodes.forEach(function(textNode) {
+                    if (textNode.nodeValue.match(regex)) {
+                        var span = document.createElement('span');
+                        span.innerHTML = textNode.nodeValue.replace(regex, "<span class='highlight-keyword'>$1</span>");
+                        textNode.parentNode.replaceChild(span, textNode);
+                    }
+                });
+            });
+        });
+    });
+</script>
 {% endblock %}

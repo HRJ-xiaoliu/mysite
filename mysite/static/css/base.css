@@ -9,15 +9,15 @@
     --accent-cyan: #3ec5e3;
     --surface: #f5f5f7;
     --surface-strong: #ffffff;
-    --surface-frost: rgba(255, 255, 255, 0.88);
-    --surface-muted: rgba(255, 255, 255, 0.6);
-    --text-strong: #1d1d1f;
-    --text-muted: #e3edf1;
-    --text-subtle: #ebeef5;
+    --surface-frost: rgba(255, 255, 255, 0.92);
+    --surface-muted: rgba(245, 247, 250, 0.75);
+    --text-strong: #0f1720;    /* 标题与高强调文本 */
+    --text-main: #111827;      /* 正文主色，确保可读对比 */
+    --text-muted: #475569;     /* 次要文本 */
+    --text-subtle: #64748b;    /* 辅助提示文本 */
     --text-link: #0b4f8a;
     --text-link-hover: #135e9d;
     --accent-slate: #4a6b8a;
-    --text-main: #1d1d1f;
 
     /* --- 2. 边框与阴影 (Borders & Shadows) --- */
     --border: rgba(15, 36, 62, 0.08);
@@ -31,7 +31,7 @@
     /* --- 3. 几何与布局 (Geometry & Layout) --- */
     --global-width: 90%;
     --max-content-width: 1980px;
-    --global-padding-x: 5px;
+    --global-padding-x: 20px; /* 统一左右内边距为 20px，提高视觉呼吸感 */
     --global-section-gap: .2rem;
     --nav-gap: .16rem;
 
@@ -71,10 +71,10 @@ html {
 body {
     margin: 0;
     min-height: 100vh;
-    line-height: 1.88;
+    line-height: 1.7;
     font-size: var(--font-base);
     font-feature-settings: "liga" 1, "calt" 1;
-    padding-top: calc(var(--header-height) + 10px);
+    padding-top: calc(var(--header-height) + 0.1rem);
     background: var(--surface);
     position: relative;
     z-index: 0;
@@ -176,10 +176,13 @@ h3 {
 
 p,
 li,
-span,
+span {
+    color: var(--text-main);
+    line-height: 1.7;
+}
+
 strong {
-    color: var(--text-muted);
-    line-height: 1.88;
+    color: var(--text-strong);
 }
 
 ul,
@@ -204,8 +207,9 @@ button,
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: .16rem .24rem;
+    padding: .18rem .28rem; /* 更舒适的可点击面积 */
     transition: transform var(--trans-base), box-shadow var(--trans-base), background-color var(--trans-base), filter var(--trans-base);
+    -webkit-tap-highlight-color: transparent;
 }
 
 .btn-primary {
@@ -279,12 +283,12 @@ section {
    ======================================== */
 .card,
 .panel{
-    background: var(--surface-frost);
-    border: 1px solid var(--border);
+    background: linear-gradient(180deg, var(--surface-strong), rgba(255,255,255,0.96));
+    border: 1px solid var(--border-soft);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-card);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .card {
@@ -303,10 +307,10 @@ section {
 .related-post-card {
     position: relative;
     padding: 0.24rem;
-    background: #ffffff;
-    border: 1px solid rgba(15, 23, 42, 0.06);
+    background: var(--surface-strong);
+    border: 1px solid var(--border-soft);
     border-radius: .08rem;
-    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.5s cubic-bezier(0.19, 1, 0.22, 1), border-color 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    transition: transform 0.45s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.45s cubic-bezier(0.19, 1, 0.22, 1), border-color 0.45s cubic-bezier(0.19, 1, 0.22, 1);
     will-change: transform, box-shadow;
     z-index: 1;
     display: flex;

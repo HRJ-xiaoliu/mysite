@@ -108,16 +108,6 @@ class MemberTcPage(Page, GlobalSearchMixin):
 
 class MemberIndexPage(Page, GlobalSearchMixin):
     template = "members/member_index_page.html"
-    
-    intro = RichTextField(blank=True, verbose_name="页面简介")
-
-    search_fields = Page.search_fields + [
-        index.SearchField('intro'),
-    ]
-
-    content_panels = Page.content_panels + [
-        FieldPanel('intro'),
-    ]
 
     def get_context(self, request):
         context = super().get_context(request)

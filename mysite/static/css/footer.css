@@ -1,11 +1,11 @@
 footer {
     position: relative;
-    background: rgba(255, 255, 255, 0.82);
-    backdrop-filter: blur(16px);
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(12px);
     color: var(--text-strong);
     padding: .64rem 0 .32rem;
     border-top: 1px solid var(--border-soft);
-    box-shadow: 0 -10px 30px rgba(11, 79, 138, 0.04);
+    box-shadow: 0 -0.1rem 0.3rem rgba(11, 79, 138, 0.04);
     z-index: 10;
 }
 
@@ -45,7 +45,7 @@ footer {
 .footer-section p,
 .footer-section li,
 .footer-section a {
-    color: var(--text-muted);
+    color: var(--text-subtle);
     font-size: 0.152rem;
     line-height: 1.8;
 }
