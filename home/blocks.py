@@ -9,10 +9,22 @@ from wagtail.blocks import (
     DateBlock,
     URLBlock,
 )
-
+from wagtail.blocks import StructValue
 from wagtail.images.blocks import ImageBlock, ImageChooserBlock
 # [核心新增] 引入 Django 底层的应用注册表模块，用于实现模型的动态解耦加载
 from django.apps import apps
+class HeroSlideStructValue(StructValue):
+    @property
+    def link_url(self):
+        link_page = self.get('link_page')
+        link_external = self.get('link_external')
+        
+        if link_page:
+            return link_page.url
+        elif link_external:
+            return link_external
+        return None
+
 class HeroSlideBlock(StructBlock):
     image = ImageChooserBlock(label="轮播图片", required=True)
     link_page = PageChooserBlock(
@@ -23,12 +35,13 @@ class HeroSlideBlock(StructBlock):
     link_external = URLBlock(
         label="外部跳转链接", 
         required=False, 
-        help_text="备选项：如果需要跳转到外网（如百度、GitHub），请在此处填写完整 URL"
+        help_text="备选项：如果需要跳转到外网，请在此处填写完整 URL"
     )
 
     class Meta:
         icon = 'image'
         label = '单张幻灯片'
+        value_class = HeroSlideStructValue
         
 class HeroCarouselBlock(StructBlock):
     slides = ListBlock(HeroSlideBlock(), label="幻灯片集合")

@@ -16,37 +16,16 @@
       <ul class="flex">
         <li>
           <h2><a href="{% slugurl 'team' %}" class="{% if '/team/' in request.path %}active{% endif %}">我们的成员</a></h2>
-          <div class="sub">
-            <div class="box">
-                  <a href="xkky/kxyj.htm">科学研究</a>
-                  <a href="xkky/xkjs.htm">学科建设</a>
-                  <a href="xkky/xsqk.htm">学术期刊</a>
-                  <a href="xkky/shfw.htm">社会服务</a>
-            </div>
-          </div>
         </li>
         <li>
           <h2><a href="{% slugurl 'research' %}" class="{% if '/research/' in request.path %}active{% endif %}">我们的研究</a></h2>
-          <div class="sub">
-            <div class="box">
-                 
-            </div>
-          </div>
         </li>
         <li>
           <h2><a href="{% slugurl 'news' %}" class="{% if '/news/' in request.path %}active{% endif %}">最近的新闻</a></h2>
-          <div class="sub">
-            <div class="box">
-                  
-          </div>
+          
         </li>
         <li>
           <h2><a href="{% slugurl 'think' %}" class="{% if '/think/' in request.path %}active{% endif %}">一些想法</a></h2>
-          <div class="sub">
-            <div class="box">
-                  
-            </div>
-          </div>
         </li>
       </ul>
     </nav>
@@ -59,7 +38,7 @@
                     <div>
                         <div class="input-group pore">
                             <input type="text" id="global-search-input" placeholder="输入关键词搜索..." autocomplete="off" class="inp"> 
-                            <button type="button" id="global-search-btn" class="sub custom-lens-btn" style="z-index: 9;">
+                            <button type="button" id="global-search-btn" class="sub custom-lens-btn" title="Search">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                     <circle cx="11" cy="11" r="8"></circle>
                                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -75,11 +54,11 @@
                     <div v-if="!isError">
                         <div class="input-group pore">
                             <input type="text" placeholder="输入关键词搜索..." autocomplete="off" class="inp" v-model=query.keyWord @keyup.enter="onSubmit">
-                            <input type="submit" value="" class="sub" style="z-index: 9;" v-on:click="onSubmit()">
-                            <button type="submit" class="sub"></button>
+                            <input type="submit" value="Submit" class="sub" v-on:click="onSubmit()">
+                            <button type="submit" class="sub" title="Submit">Submit</button>
                         </div>
                     </div>
-                    <div v-if="isError" style="color: #b30216; font-size:18px;text-align: center;padding:20px;">
+                    <div v-if="isError" class="error-message">
                         应用维护中！
                     </div>
                 </div>

@@ -131,7 +131,20 @@
                 </header>
                 <article class="profile-content-area">
                     {% for block in member.dynamic_content %}
-                        {% include_block block %}
+                        {% if block.block_type == 'heading' %}
+                            <h2 class="stream-heading">{{ block.value }}</h2>
+                        {% elif block.block_type == 'paragraph' %}
+                            <div class="stream-paragraph rich-text-content">
+                                {{ block.value|richtext }}
+                            </div>
+                        {% elif block.block_type == 'image' %}
+                            <div class="stream-image-wrapper">
+                                {% image block.value width-800 as inline_img %}
+                                <img src="{{ inline_img.url }}" alt="插图">
+                            </div>
+                        {% else %}
+                            {% include_block block %}
+                        {% endif %}
                     {% endfor %}
                 </article>
             </div>

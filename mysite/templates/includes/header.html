@@ -17,14 +17,12 @@
         </div>
 
         <nav class="alt-hdr-center">
-            <ul class="alt-hdr-nav-links">
-                {% if page.id != home_page.id %}
-                    <li><a href="{% pageurl home_page %}" class="{% if request.path == '/' %}active{% endif %}">首页</a></li>
-                {% endif %}
-                <li><a href="{% slugurl 'team' %}" class="{% if '/team/' in request.path %}active{% endif %}">我们的成员</a></li>
-                <li><a href="{% slugurl 'research' %}" class="{% if '/research/' in request.path %}active{% endif %}">我们的研究</a></li>
-                <li><a href="{% slugurl 'news' %}" class="{% if '/news/' in request.path %}active{% endif %}">最近的新闻</a></li>
-                <li><a href="{% slugurl 'think' %}" class="{% if '/think/' in request.path %}active{% endif %}">一些想法</a></li>
+            <ul class="alt-hdr-nav-links">{% if page.id != home_page.id %}          
+                <li><a href="{% pageurl home_page %}" class="{% if request.path == '/' %}active{% endif %}">Home</a></li>{% endif %}
+                <li><a href="{% slugurl 'team' %}" class="{% if '/team/' in request.path %}active{% endif %}">Team</a></li>
+                <li><a href="{% slugurl 'research' %}" class="{% if '/research/' in request.path %}active{% endif %}">Research</a></li>
+                <li><a href="{% slugurl 'publications' %}" class="{% if '/publications/' in request.path %}active{% endif %}">Publications</a></li>
+                <li><a href="{% slugurl 'blogs' %}" class="{% if '/blogs/' in request.path %}active{% endif %}">Blogs</a></li>
             </ul>
         </nav>
 
@@ -36,7 +34,7 @@
                     <div>
                         <div class="input-group pore">
                             <input type="text" id="global-search-input" placeholder="输入关键词搜索..." autocomplete="off" class="inp"> 
-                            <button type="button" id="global-search-btn" class="sub custom-lens-btn" style="z-index: 9;">
+                            <button type="button" id="global-search-btn" class="sub custom-lens-btn" aria-label="搜索">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                     <circle cx="11" cy="11" r="8"></circle>
                                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>

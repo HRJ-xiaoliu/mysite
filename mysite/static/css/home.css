@@ -82,6 +82,7 @@
     padding: clamp(.32rem, 4vw, .56rem);
     background: linear-gradient(180deg, rgba(4, 36, 71, 0.28) 0%, rgba(4, 36, 71, 0.86) 100%);
     color: #fff;
+    -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
 }
 

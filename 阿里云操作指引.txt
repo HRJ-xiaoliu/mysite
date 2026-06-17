@@ -1,0 +1,13 @@
+cd my_wagtail_project  #进入项目目录
+
+conda activate wagtail_env  #激活虚拟环境
+
+git clone https://github.com/HRJ-xiaoliu/mysite.git  #克隆项目代码，链接根据情况修改
+
+python manage.py makemigrations  #创建数据库迁移文件
+
+python manage.py migrate  #执行数据库迁移
+
+python manage.py createsuperuser  #创建管理员账户
+
+python manage.py runserver  #启动开发服务器

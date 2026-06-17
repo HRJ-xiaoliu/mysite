@@ -1,6 +1,7 @@
 footer {
     position: relative;
     background: rgba(255, 255, 255, 0.88);
+    -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
     color: var(--text-strong);
     padding: .64rem 0 .32rem;

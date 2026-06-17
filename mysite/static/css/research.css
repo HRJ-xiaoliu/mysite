@@ -122,10 +122,14 @@
     border-radius: var(--radius-lg);
     border: 1px solid rgba(15, 36, 62, 0.06);
     box-shadow: 0 0.12rem 0.36rem rgba(15,36,62,0.06);
-    padding: 0.4rem 0.45rem;
+    /* 大幅削减四周冗余留白，确立适度的物理边界 */
+    padding: 0.28rem 0.32rem; 
     transition: transform var(--trans-base), box-shadow var(--trans-base), border-color var(--trans-base);
     position: relative;
     overflow: hidden;
+    /* 引入弹性盒模型，实现内部元素的自然排布 */
+    display: flex;
+    flex-direction: column;
 }
 
 .research-item-card::before {
@@ -153,37 +157,45 @@
 .pub-tag {
     display: inline-flex;
     align-items: center;
-    padding: 0.06rem 0.14rem;
+    /* 微调标签自身的内边距使其更加精致 */
+    padding: 0.04rem 0.12rem; 
     background: linear-gradient(90deg, rgba(240,246,252,1), rgba(235,243,250,1));
     color: var(--brand-blue);
     font-size: 0.136rem;
     font-weight: 600;
     border-radius: 0.06rem;
-    margin-bottom: 0.16rem;
     border: 1px solid rgba(11,79,138,0.04);
+    /* 拉开标签与下方标题的垂直距离 */
+    margin-bottom: 0.2rem; 
+    /* 防止弹性布局下拉伸标签宽度 */
+    align-self: flex-start; 
 }
 
 .research-item-card h3 {
     font-size: 0.216rem;
     color: var(--text-primary);
-    margin: 0 0 0.12rem 0;
     line-height: 1.5;
     font-weight: 600;
+    /* 增加标题与下方元数据的间隙，增强标题独立视区 */
+    margin: 0 0 0.18rem 0; 
 }
 
 .research-meta {
     font-size: 0.16rem;
     color: var(--text-secondary);
     line-height: 1.6;
-    margin-bottom: 0.2rem;
+    /* 充分释放元数据与底部操作栏的缓冲空间 */
+    margin-bottom: 0.3rem; 
 }
 
-/* 4. 交互操作区与手风琴摘要 */
 .research-actions {
     display: flex;
     gap: 0.24rem;
-    padding-top: 0.2rem;
+    /* 配合上方间距，重新标定分割线的上边距 */
+    padding-top: 0.24rem; 
     border-top: 1px solid var(--border-soft);
+    /* 将操作区推至卡片底部，防止内容过少时版式崩塌 */
+    margin-top: auto; 
 }
 
 .action-btn {
@@ -230,4 +242,292 @@
 @media (max-width: 1100px) {
     .research-container { width: 92%; flex-direction: column; }
     .research-sidebar { width: 100%; flex: auto; }
+}
+
+/* ==========================================================================
+   研究成果模块 - 极客学术数据库风格 (知网 CNKI 范式)
+   ========================================================================== */
+
+:root {
+    --cnki-blue: #2E68C0;       /* 标志性深蓝 */
+    --cnki-blue-light: #4A82D8;
+    --cnki-bg: #F5F5F5;         /* 灰白底色 */
+    --cnki-border: #E4E6E9;     /* 浅灰边框 */
+    --cnki-text-main: #333333;  /* 正文黑 */
+    --cnki-text-sub: #666666;   /* 次级灰 */
+    --cnki-table-hover: #F2F7FD;/* 表格悬停浅蓝 */
+    --cnki-table-header: #FAFAFA;
+}
+
+.cnki-system-wrapper {
+    background-color: var(--cnki-bg);
+    min-height: 100vh;
+    font-family: "Microsoft YaHei", "SimSun", sans-serif; /* 偏向传统排版的字体栈 */
+}
+
+.cnki-container {
+    width: min(98%, 1400px);
+    margin: 0 auto;
+}
+
+/* --- 1. 顶部深蓝导航栏 --- */
+.cnki-top-nav {
+    background: linear-gradient(90deg, #1C4CA0, #2E68C0);
+    height: 64px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.cnki-top-nav .cnki-container {
+    display: flex;
+    height: 100%;
+}
+
+.top-nav-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 30px;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.2s;
+}
+
+.top-nav-item:hover {
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+}
+
+.top-nav-item.active {
+    background: var(--cnki-blue-light);
+    color: #fff;
+    border-bottom: 3px solid #FF9800; /* 标志性的橙色激活条 */
+}
+
+.top-nav-item .nav-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.top-nav-item .nav-count {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+/* --- 2. 主体左右分栏 --- */
+.main-layout {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    align-items: flex-start;
+}
+
+/* 左侧边栏 (主题聚类) */
+.cnki-sidebar {
+    flex: 0 0 240px;
+    background: #fff;
+    border: 1px solid var(--cnki-border);
+}
+
+.sidebar-section {
+    border-bottom: 1px solid var(--cnki-border);
+}
+
+.sidebar-header {
+    background: #F0F4FA;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--cnki-blue);
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.sidebar-list {
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+}
+
+.sidebar-list li {
+    padding: 6px 15px;
+    font-size: 13px;
+    color: var(--cnki-text-main);
+    cursor: pointer;
+}
+
+.sidebar-list li:hover {
+    background: var(--cnki-table-hover);
+    color: var(--cnki-blue);
+}
+
+.list-index {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: #FF7B7B;
+    color: #fff;
+    text-align: center;
+    line-height: 16px;
+    border-radius: 2px;
+    font-size: 12px;
+    margin-right: 6px;
+}
+
+.sidebar-list li:nth-child(n+4) .list-index {
+    background: #CCC; /* 模拟排名的颜色渐淡 */
+}
+
+.sidebar-filters {
+    padding: 10px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 13px;
+}
+
+/* --- 3. 右侧主数据区与工具栏 --- */
+.cnki-main-content {
+    flex: 1;
+    min-width: 0;
+    background: #fff;
+    border: 1px solid var(--cnki-border);
+}
+
+.cnki-panel {
+    display: none;
+    flex-direction: column;
+}
+
+.cnki-panel.active {
+    display: flex;
+}
+
+.cnki-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background: #FAFAFA;
+    border-bottom: 1px solid var(--cnki-border);
+    font-size: 13px;
+}
+
+.toolbar-left, .toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.tool-btn {
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 4px 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.tool-btn:hover { border-color: var(--cnki-blue); color: var(--cnki-blue); }
+
+.sort-link { color: var(--cnki-text-main); text-decoration: none; }
+.sort-link.active { color: var(--cnki-blue); font-weight: bold; }
+.display-mode { border: 1px solid #ddd; padding: 2px 6px; background: #fff; }
+
+/* --- 4. 数据表格核心样式 --- */
+.cnki-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    text-align: left;
+}
+
+.cnki-table th {
+    background: var(--cnki-table-header);
+    color: var(--cnki-text-sub);
+    padding: 10px;
+    font-weight: normal;
+    border-bottom: 1px solid var(--cnki-border);
+    white-space: nowrap;
+}
+
+.cnki-table td {
+    padding: 12px 10px;
+    border-bottom: 1px dashed #EEE;
+    color: var(--cnki-text-main);
+    vertical-align: middle;
+}
+
+/* 隔行换色与悬停 */
+.cnki-table tbody .data-row:nth-child(even) { background-color: #FAFAFA; }
+.cnki-table tbody .data-row:hover { background-color: var(--cnki-table-hover); }
+
+/* 表格内元素打磨 */
+.item-title {
+    color: var(--cnki-text-main);
+    font-size: 14px;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    margin-right: 8px;
+}
+
+.item-title:hover {
+    color: #D32F2F; /* 知网典型的标题悬停飘红 */
+    text-decoration: underline;
+}
+
+.tag-orange {
+    font-size: 11px;
+    border: 1px solid #FF9800;
+    color: #FF9800;
+    padding: 1px 4px;
+    border-radius: 2px;
+}
+
+.text-gray { color: var(--cnki-text-sub); }
+.text-center { text-align: center; }
+
+.actions-cell {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-start;
+}
+
+.icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: #F0F4FA;
+    border: 1px solid #D5E1F2;
+    border-radius: 2px;
+    transition: all 0.2s;
+}
+
+.icon-btn:hover {
+    background: var(--cnki-blue);
+    border-color: var(--cnki-blue);
+}
+.icon-btn:hover svg { stroke: #fff; } /* 悬停时图标变白 */
+
+/* --- 5. 摘要下拉行 --- */
+.abstract-row {
+    background-color: #FDFDFD;
+}
+.abstract-row td {
+    border-bottom: 1px solid var(--cnki-border);
+    padding: 15px 20px 20px 0;
+}
+.abstract-content {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.8;
+    background: #F8F9FA;
+    padding: 15px;
+    border-left: 3px solid var(--cnki-blue);
 }
