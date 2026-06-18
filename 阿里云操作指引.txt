@@ -2,7 +2,9 @@ cd my_wagtail_project  #进入项目目录
 
 conda activate wagtail_env  #激活虚拟环境
 
-git clone https://github.com/HRJ-xiaoliu/mysite.git  #克隆项目代码，链接根据情况修改
+git pull origin main  #根据更新情况拉取项目代码，链接根据情况修改
+
+git pull origin main  #拉取最新代码
 
 python manage.py makemigrations  #创建数据库迁移文件
 

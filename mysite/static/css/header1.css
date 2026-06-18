@@ -22,7 +22,7 @@
 * { box-sizing: border-box; }
 
 html, body {
-    color: #1e293b;
+    color: #000000;
     font-size: 100px;
     margin-left: auto !important;
     margin-right: auto !important;
@@ -101,7 +101,7 @@ input[type='text']:focus-visible { outline: none; }
     font-size: 0.5rem; 
     font-weight: 700; 
     letter-spacing: 0.06rem; 
-    background: linear-gradient(90deg, #0f172a 0%, #1e3a8a 40%, #0e7490 100%); 
+    background: linear-gradient(90deg, #008cff 100%); 
     background-size: 200% auto; 
     -webkit-background-clip: text; 
     background-clip: text; 
@@ -115,7 +115,7 @@ input[type='text']:focus-visible { outline: none; }
 
 .header_left:hover { 
     transform: scale(1.02) translateY(-1px); 
-    filter: drop-shadow(0 4px 12px rgba(14, 116, 144, 0.25)) brightness(1.05); 
+    filter: drop-shadow(0 4px 12px #008cff) brightness(1.05); 
 }
 
 #nav { 

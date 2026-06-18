@@ -115,7 +115,7 @@
     background: var(--primary-blue);
     transition: all var(--trans-slow) cubic-bezier(0.4, 0, 0.2, 1);
     transform: translateX(-50%);
-    box-shadow: 0 -2px 10px rgba(11, 79, 138, 0.5);
+    box-shadow: 0 -2px 10px #008cff;
 }
 
 .alt-hdr-nav-links a:hover::after, .alt-hdr-nav-links a.active::after {
@@ -137,7 +137,7 @@
 }
 
 .custom-search-box form:focus-within {
-    border-color: rgba(54, 138, 247, 0.4);
+    border-color:  #008cff;
     box-shadow: 0 0.04rem 0.2rem rgba(54, 138, 247, 0.15);
 }
 
@@ -168,7 +168,7 @@
     justify-content: center;
     align-items: center;
     border-radius: 0.08rem; 
-    background: linear-gradient(135deg, #3ec5e3 0%, #368af7 50%, #0a5dda 100%);
+    background: linear-gradient(135deg, #3ec5e3 0%, #368af7 50%);
     color: #ffffff;
     font-size: 0.16rem;
     letter-spacing: 0.02rem;
