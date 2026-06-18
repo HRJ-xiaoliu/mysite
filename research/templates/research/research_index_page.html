@@ -13,62 +13,31 @@
 <main class="cnki-system-wrapper">
     <nav class="cnki-top-nav">
         <div class="cnki-container">
-            <a href="javascript:void(0);" class="top-nav-item active" onclick="switchResearchTab('pub-panel', this)">
-                <div class="nav-title">总库 / 论文</div>
+            <a href="javascript:void(0);" class="top-nav-item active" onclick="filterResearch('all', this)">
+                <div class="nav-title">总库</div>
                 <div class="nav-count">{{ self.publications.count }}</div>
             </a>
-            <a href="javascript:void(0);" class="top-nav-item" onclick="switchResearchTab('patent-panel', this)">
+            <a href="javascript:void(0);" class="top-nav-item" onclick="filterResearch('paper', this)">
+                <div class="nav-title">论文</div>
+                <div class="nav-count">论文库</div>
+            </a>
+            <a href="javascript:void(0);" class="top-nav-item" onclick="filterResearch('patent', this)">
                 <div class="nav-title">发明专利</div>
                 <div class="nav-count">专利库</div>
             </a>
-            <a href="javascript:void(0);" class="top-nav-item" onclick="switchResearchTab('proj-panel', this)">
+            <a href="javascript:void(0);" class="top-nav-item" onclick="filterResearch('project', this)">
                 <div class="nav-title">科研项目</div>
                 <div class="nav-count">项目库</div>
             </a>
         </div>
     </nav>
 
-    <div class="cnki-container main-layout">
-        <aside class="cnki-sidebar">
-            <div class="sidebar-section">
-                <div class="sidebar-header">
-                    <span>学术成果聚类</span>
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"></polyline></svg>
-                </div>
-                <ul class="sidebar-list">
-                    <li><span class="list-index">1</span> 期刊论文 (Journal)</li>
-                    <li><span class="list-index">2</span> 会议文章 (Conference)</li>
-                    <li><span class="list-index">3</span> 发明专利 (Patent)</li>
-                    <li><span class="list-index">4</span> 科研项目 (Project)</li>
-                </ul>
-            </div>
-            
-            <div class="sidebar-section">
-                <div class="sidebar-header">
-                    <span>年份筛选</span>
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <div class="sidebar-filters">
-                    <label><input type="checkbox"> 2024年及以后</label>
-                    <label><input type="checkbox"> 2023年</label>
-                    <label><input type="checkbox"> 2022年</label>
-                </div>
-            </div>
-        </aside>
-
         <section class="cnki-main-content">
             <div id="pub-panel" class="cnki-panel active">
                 <div class="cnki-toolbar">
-                    <div class="toolbar-left">
-                        <label><input type="checkbox" id="selectAll" title="全选所有记录"> 全选</label>
-                        <button class="tool-btn">批量操作 ▾</button>
-                        <button class="tool-btn">导出与分析 ▾</button>
-                    </div>
                     <div class="toolbar-right">
                         <span>排序：</span>
-                        <a href="#" class="sort-link">相关度</a>
                         <a href="#" class="sort-link active">发表时间 ↓</a>
-                        <span class="display-mode">显示 20 ▾</span>
                     </div>
                 </div>
 
@@ -80,7 +49,6 @@
                             <th width="20%">作者</th>
                             <th width="15%">来源</th>
                             <th width="8%">发表时间</th>
-                            <th width="8%">操作</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -123,7 +91,6 @@
             </div>
 
             <div id="patent-panel" class="cnki-panel">
-                <div class="cnki-toolbar"><div class="toolbar-left"><span>检索范围：发明专利、实用新型、软著</span></div></div>
                 <table class="cnki-table">
                     <thead>
                         <tr>
@@ -164,7 +131,6 @@
             </div>
 
             <div id="proj-panel" class="cnki-panel">
-                <div class="cnki-toolbar"><div class="toolbar-left"><span>检索范围：国家级课题、横向项目、基金</span></div></div>
                 <table class="cnki-table">
                     <thead>
                         <tr>
@@ -204,24 +170,50 @@
 </main>
 
 <script>
-// 1. 顶部大导航切换逻辑
-function switchResearchTab(panelId, btn) {
-    document.querySelectorAll('.cnki-panel').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.top-nav-item').forEach(b => b.classList.remove('active'));
+// ==========================================
+// 1. 顶部大导航与面板无缝切换逻辑
+// ==========================================
+function filterResearch(category, btnElement) {
+    // 步骤1：清除所有导航按钮的高亮激活状态
+    var buttons = document.querySelectorAll('.top-nav-item');
+    buttons.forEach(function(btn) {
+        btn.classList.remove('active');
+    });
     
-    document.getElementById(panelId).classList.add('active');
-    if (btn) btn.classList.add('active');
+    // 步骤2：激活当前点击的按钮
+    btnElement.classList.add('active');
+    
+    // 步骤3：精准获取三个知网数据面板容器
+    var pubPanel = document.getElementById('pub-panel');
+    var patentPanel = document.getElementById('patent-panel');
+    var projPanel = document.getElementById('proj-panel');
+
+    // 步骤4：先强制移除所有面板的显示状态
+    if(pubPanel) pubPanel.classList.remove('active');
+    if(patentPanel) patentPanel.classList.remove('active');
+    if(projPanel) projPanel.classList.remove('active');
+
+    // 步骤5：根据传入的 category 指令，精准显示对应的面板
+    if (category === 'all') {
+        // 点击“总库”：所有表格面板一起展示
+        if(pubPanel) pubPanel.classList.add('active');
+        if(patentPanel) patentPanel.classList.add('active');
+        if(projPanel) projPanel.classList.add('active');
+    } else if (category === 'paper') {
+        if(pubPanel) pubPanel.classList.add('active');
+    } else if (category === 'patent') {
+        if(patentPanel) patentPanel.classList.add('active');
+    } else if (category === 'project') {
+        if(projPanel) projPanel.classList.add('active');
+    }
 }
 
-// 2. 表格内部的摘要行下拉逻辑 (替代原有的手风琴)
+// ==========================================
+// 2. 表格内部的摘要行下拉/收起逻辑
+// ==========================================
 function toggleAbstractRow(rowId) {
     const targetRow = document.getElementById(rowId);
     if (!targetRow) return;
-    
-    // 如果想要排他性展开（点开一个自动收起其他），解开下面两行注释
-    // document.querySelectorAll('.abstract-row').forEach(row => {
-    //     if (row.id !== rowId) row.style.display = 'none';
-    // });
     
     if (targetRow.style.display === 'none') {
         targetRow.style.display = 'table-row';
@@ -229,5 +221,67 @@ function toggleAbstractRow(rowId) {
         targetRow.style.display = 'none';
     }
 }
+
+// ==========================================
+// 3. 动态按发表时间排序逻辑（针对表格中的配对行）
+// ==========================================
+document.addEventListener("DOMContentLoaded", function() {
+    const sortLink = document.querySelector('.sort-link');
+    if (!sortLink) return;
+
+    // 初始状态设定，默认为降序（↓ 代表最新年份在前）
+    let isDescending = true; 
+
+    sortLink.addEventListener('click', function(e) {
+        e.preventDefault(); // 阻止a标签的默认跳转
+        
+        // 切换排序标识与文字UI
+        isDescending = !isDescending;
+        this.textContent = isDescending ? '发表时间 ↓' : '发表时间 ↑';
+        
+        // 只对包含时间列的面板进行排序操作（论文面板和专利面板）
+        const panelsToSort = ['pub-panel', 'patent-panel'];
+        
+        panelsToSort.forEach(function(panelId) {
+            const panel = document.getElementById(panelId);
+            if (!panel) return;
+            
+            const tbody = panel.querySelector('tbody');
+            if (!tbody) return;
+
+            // 提取所有的主数据行 (剔除隐藏的摘要行)
+            const dataRows = Array.from(tbody.querySelectorAll('tr.data-row'));
+            
+            // 将主数据行与它挂载的摘要行(如果有)打包成一个独立的对象
+            const rowPairs = dataRows.map(function(row) {
+                // 您的 HTML 结构中，年份位于表格的第5列 (索引值为4)
+                let yearText = row.cells[4] ? row.cells[4].textContent.trim() : "0";
+                let year = parseInt(yearText) || 0;
+                
+                let nextNode = row.nextElementSibling;
+                let abstractRow = (nextNode && nextNode.classList.contains('abstract-row')) ? nextNode : null;
+                
+                return { year: year, mainRow: row, abstractRow: abstractRow };
+            });
+            
+            // 依据提取到的年份数字进行物理数组排序
+            rowPairs.sort(function(a, b) {
+                if (isDescending) {
+                    return b.year - a.year; // 降序：大年份排前面
+                } else {
+                    return a.year - b.year; // 升序：小年份排前面
+                }
+            });
+            
+            // 将排序后的节点对重新注入回页面的 DOM 树中
+            rowPairs.forEach(function(pair) {
+                tbody.appendChild(pair.mainRow);
+                if (pair.abstractRow) {
+                    tbody.appendChild(pair.abstractRow);
+                }
+            });
+        });
+    });
+});
 </script>
 {% endblock %}

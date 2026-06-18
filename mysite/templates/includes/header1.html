@@ -15,17 +15,17 @@
     <nav id="nav">
       <ul class="flex">
         <li>
-          <h2><a href="{% slugurl 'team' %}" class="{% if '/team/' in request.path %}active{% endif %}">我们的成员</a></h2>
+          <h2><a href="{% slugurl 'team' %}" class="{% if '/team/' in request.path %}active{% endif %}">Team</a></h2>
         </li>
         <li>
-          <h2><a href="{% slugurl 'research' %}" class="{% if '/research/' in request.path %}active{% endif %}">我们的研究</a></h2>
+          <h2><a href="{% slugurl 'research' %}" class="{% if '/research/' in request.path %}active{% endif %}">Research</a></h2>
         </li>
         <li>
-          <h2><a href="{% slugurl 'news' %}" class="{% if '/news/' in request.path %}active{% endif %}">最近的新闻</a></h2>
+          <h2><a href="{% slugurl 'publications' %}" class="{% if '/publications/' in request.path %}active{% endif %}">Publications</a></h2>
           
         </li>
         <li>
-          <h2><a href="{% slugurl 'think' %}" class="{% if '/think/' in request.path %}active{% endif %}">一些想法</a></h2>
+          <h2><a href="{% slugurl 'blogs' %}" class="{% if '/blogs/' in request.path %}active{% endif %}">Blogs</a></h2>
         </li>
       </ul>
     </nav>
