@@ -1,5 +1,26 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 
+<style>
+    .hero-carousel-system .carousel-slide {
+        opacity: 0;
+        transition: opacity 1s ease-in-out !important;
+        transform: none !important;
+        animation: none !important;
+    }
+
+    .hero-carousel-system .carousel-slide.active {
+        opacity: 1;
+        transform: none !important;
+        animation: none !important;
+    }
+
+    .hero-carousel-system .carousel-slide img {
+        transform: scale(1) !important;
+        animation: none !important;
+        transition: none !important;
+    }
+</style>
+
 <section class="hero-carousel-system">
     <div class="carousel-viewport">
         
